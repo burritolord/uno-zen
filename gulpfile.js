@@ -12,7 +12,6 @@ const gulpif      = require('gulp-if');
 const gutil       = require('gulp-util');
 const sass        = require('gulp-sass');
 const concat      = require('gulp-concat');
-const coffee      = require('gulp-coffee');
 const header      = require('gulp-header');
 const uglify      = require('gulp-uglify');
 const cssnano     = require('gulp-cssnano');
@@ -42,21 +41,21 @@ const src = {
 
   js         : {
     common   : {
-      main   : ['assets/js/src/__init.coffee',
-                'assets/js/src/main.coffee',
-                'assets/js/src/cover.coffee'],
-      vendor : ['assets/vendor/fastclick/lib/fastclick.js',
-                'assets/vendor/instantclick/instantclick.js',
-                'assets/vendor/pace/pace.min.js',
-                'assets/vendor/reading-time/build/readingTime.min.js']
+      main   : ['assets/js/src/__init.js',
+                'assets/js/src/main.js',
+                'assets/js/src/cover.js'],
+      node_modules : ['node_modules/fastclick/lib/fastclick.js',
+                'node_modules/instantclick/instantclick.js',
+                'node_modules/pace/pace.js',
+                'node_modules/reading-time/lib/reading-time.js']
     },
-    post     : ['assets/vendor/fitvids/jquery.fitvids.js',
+    post     : ['node_modules/fitvids/fitvids.js',
                 'assets/js/src/prism.js']
   },
 
   css      : {
     main   : `assets/css/${dist.name}.css`,
-    vendor : []
+    node_modules : []
   }
 };
 
@@ -74,8 +73,7 @@ const banner = [ "/**",
 gulp.task('js-common', function() {
   gulp.src(src.js.common.main)
   .pipe(changed(dist.js))
-  .pipe(coffee().on('error', gutil.log))
-  .pipe(addsrc(src.js.common.vendor))
+  .pipe(addsrc(src.js.common.node_modules))
   .pipe(concat(dist.name + '.common.js'))
   .pipe(gulpif(isProduction, uglify()))
   .pipe(gulpif(isProduction, header(banner, {pkg})))
@@ -92,7 +90,7 @@ gulp.task('js-post', function() {
 });
 
 gulp.task('css', function() {
-  gulp.src(src.css.vendor)
+  gulp.src(src.css.node_modules)
   .pipe(changed(dist.css))
   .pipe(addsrc(src.sass.main))
   .pipe(sass().on('error', sass.logError))
