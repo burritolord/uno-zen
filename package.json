@@ -18,25 +18,27 @@
   "keywords": [
     "elegant",
     "ghost",
+    "ghost-theme",
     "minimalism",
     "theme",
     "uno",
     "zen"
   ],
   "devDependencies": {
-    "browser-sync": "latest",
+    "browser-sync": "^2.24.7",
     "coffee-script": "latest",
-    "gulp-add-src": "latest",
-    "gulp-autoprefixer": "latest",
-    "gulp-changed": "latest",
+    "gulp": "^3.9.1",
+    "gulp-add-src": "^1.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-changed": "^3.2.0",
     "gulp-coffee": "latest",
-    "gulp-concat": "latest",
-    "gulp-cssnano": "latest",
-    "gulp-header": "latest",
-    "gulp-if": "latest",
-    "gulp-sass": "latest",
-    "gulp-strip-css-comments": "latest",
-    "gulp-uglify": "latest",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.3",
+    "gulp-header": "^2.0.5",
+    "gulp-if": "^2.0.2",
+    "gulp-sass": "^4.0.1",
+    "gulp-strip-css-comments": "^2.0.0",
+    "gulp-uglify": "^3.0.1",
     "gulp-util": "latest"
   },
   "engines": {
@@ -56,6 +58,6 @@
     "fitvids": "^2.0.0",
     "instantclick": "^3.1.0-2",
     "pace": "0.0.4",
-    "reading-time": "^1.1.3"
+    "reading-time": "github:michael-lynch/reading-time"
   }
 }

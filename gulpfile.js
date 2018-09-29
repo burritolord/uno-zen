@@ -44,10 +44,11 @@ const src = {
       main   : ['assets/js/src/__init.js',
                 'assets/js/src/main.js',
                 'assets/js/src/cover.js'],
-      node_modules : ['node_modules/fastclick/lib/fastclick.js',
+      node_modules : ['node_modules/reading-time/src/readingtime.js',
+                'node_modules/fastclick/lib/fastclick.js',
                 'node_modules/instantclick/instantclick.js',
                 'node_modules/pace/pace.js',
-                'node_modules/reading-time/lib/reading-time.js']
+                ]
     },
     post     : ['node_modules/fitvids/fitvids.js',
                 'assets/js/src/prism.js']
@@ -71,9 +72,9 @@ const banner = [ "/**",
 // -- Tasks ---------------------------------------------------------------------
 
 gulp.task('js-common', function() {
-  gulp.src(src.js.common.main)
+  gulp.src(src.js.common.node_modules)
   .pipe(changed(dist.js))
-  .pipe(addsrc(src.js.common.node_modules))
+  .pipe(addsrc(src.js.common.main))
   .pipe(concat(dist.name + '.common.js'))
   .pipe(gulpif(isProduction, uglify()))
   .pipe(gulpif(isProduction, header(banner, {pkg})))

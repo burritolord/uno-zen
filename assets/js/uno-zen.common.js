@@ -1,8 +1,1540 @@
-/**
- * uno-zen - Minimalist and Elegant theme for Ghost
- * @version 2.9.8
- * @link    https://github.com/kikobeats/uno-zen
- * @author  Kiko Beats (https://github.com/kikobeats)
- * @license MIT
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-!function(){"use strict";function t(e,r){var i;if(r=r||{},this.trackingClick=!1,this.trackingClickStart=0,this.targetElement=null,this.touchStartX=0,this.touchStartY=0,this.lastTouchIdentifier=0,this.touchBoundary=r.touchBoundary||10,this.layer=e,this.tapDelay=r.tapDelay||200,this.tapTimeout=r.tapTimeout||700,!t.notNeeded(e)){for(var o=["onMouse","onClick","onTouchStart","onTouchMove","onTouchEnd","onTouchCancel"],s=this,a=0,c=o.length;a<c;a++)s[o[a]]=function(t,e){return function(){return t.apply(e,arguments)}}(s[o[a]],s);n&&(e.addEventListener("mouseover",this.onMouse,!0),e.addEventListener("mousedown",this.onMouse,!0),e.addEventListener("mouseup",this.onMouse,!0)),e.addEventListener("click",this.onClick,!0),e.addEventListener("touchstart",this.onTouchStart,!1),e.addEventListener("touchmove",this.onTouchMove,!1),e.addEventListener("touchend",this.onTouchEnd,!1),e.addEventListener("touchcancel",this.onTouchCancel,!1),Event.prototype.stopImmediatePropagation||(e.removeEventListener=function(t,n,r){var i=Node.prototype.removeEventListener;"click"===t?i.call(e,t,n.hijacked||n,r):i.call(e,t,n,r)},e.addEventListener=function(t,n,r){var i=Node.prototype.addEventListener;"click"===t?i.call(e,t,n.hijacked||(n.hijacked=function(t){t.propagationStopped||n(t)}),r):i.call(e,t,n,r)}),"function"==typeof e.onclick&&(i=e.onclick,e.addEventListener("click",function(t){i(t)},!1),e.onclick=null)}}var e=navigator.userAgent.indexOf("Windows Phone")>=0,n=navigator.userAgent.indexOf("Android")>0&&!e,r=/iP(ad|hone|od)/.test(navigator.userAgent)&&!e,i=r&&/OS 4_\d(_\d)?/.test(navigator.userAgent),o=r&&/OS [6-7]_\d/.test(navigator.userAgent),s=navigator.userAgent.indexOf("BB10")>0;t.prototype.needsClick=function(t){switch(t.nodeName.toLowerCase()){case"button":case"select":case"textarea":if(t.disabled)return!0;break;case"input":if(r&&"file"===t.type||t.disabled)return!0;break;case"label":case"iframe":case"video":return!0}return/\bneedsclick\b/.test(t.className)},t.prototype.needsFocus=function(t){switch(t.nodeName.toLowerCase()){case"textarea":return!0;case"select":return!n;case"input":switch(t.type){case"button":case"checkbox":case"file":case"image":case"radio":case"submit":return!1}return!t.disabled&&!t.readOnly;default:return/\bneedsfocus\b/.test(t.className)}},t.prototype.sendClick=function(t,e){var n,r;document.activeElement&&document.activeElement!==t&&document.activeElement.blur(),r=e.changedTouches[0],(n=document.createEvent("MouseEvents")).initMouseEvent(this.determineEventType(t),!0,!0,window,1,r.screenX,r.screenY,r.clientX,r.clientY,!1,!1,!1,!1,0,null),n.forwardedTouchEvent=!0,t.dispatchEvent(n)},t.prototype.determineEventType=function(t){return n&&"select"===t.tagName.toLowerCase()?"mousedown":"click"},t.prototype.focus=function(t){var e;r&&t.setSelectionRange&&0!==t.type.indexOf("date")&&"time"!==t.type&&"month"!==t.type?(e=t.value.length,t.setSelectionRange(e,e)):t.focus()},t.prototype.updateScrollParent=function(t){var e,n;if(!(e=t.fastClickScrollParent)||!e.contains(t)){n=t;do{if(n.scrollHeight>n.offsetHeight){e=n,t.fastClickScrollParent=n;break}n=n.parentElement}while(n)}e&&(e.fastClickLastScrollTop=e.scrollTop)},t.prototype.getTargetElementFromEventTarget=function(t){return t.nodeType===Node.TEXT_NODE?t.parentNode:t},t.prototype.onTouchStart=function(t){var e,n,o;if(t.targetTouches.length>1)return!0;if(e=this.getTargetElementFromEventTarget(t.target),n=t.targetTouches[0],r){if((o=window.getSelection()).rangeCount&&!o.isCollapsed)return!0;if(!i){if(n.identifier&&n.identifier===this.lastTouchIdentifier)return t.preventDefault(),!1;this.lastTouchIdentifier=n.identifier,this.updateScrollParent(e)}}return this.trackingClick=!0,this.trackingClickStart=t.timeStamp,this.targetElement=e,this.touchStartX=n.pageX,this.touchStartY=n.pageY,t.timeStamp-this.lastClickTime<this.tapDelay&&t.preventDefault(),!0},t.prototype.touchHasMoved=function(t){var e=t.changedTouches[0],n=this.touchBoundary;return Math.abs(e.pageX-this.touchStartX)>n||Math.abs(e.pageY-this.touchStartY)>n},t.prototype.onTouchMove=function(t){return!this.trackingClick||((this.targetElement!==this.getTargetElementFromEventTarget(t.target)||this.touchHasMoved(t))&&(this.trackingClick=!1,this.targetElement=null),!0)},t.prototype.findControl=function(t){return void 0!==t.control?t.control:t.htmlFor?document.getElementById(t.htmlFor):t.querySelector("button, input:not([type=hidden]), keygen, meter, output, progress, select, textarea")},t.prototype.onTouchEnd=function(t){var e,s,a,c,u,l=this.targetElement;if(!this.trackingClick)return!0;if(t.timeStamp-this.lastClickTime<this.tapDelay)return this.cancelNextClick=!0,!0;if(t.timeStamp-this.trackingClickStart>this.tapTimeout)return!0;if(this.cancelNextClick=!1,this.lastClickTime=t.timeStamp,s=this.trackingClickStart,this.trackingClick=!1,this.trackingClickStart=0,o&&(u=t.changedTouches[0],(l=document.elementFromPoint(u.pageX-window.pageXOffset,u.pageY-window.pageYOffset)||l).fastClickScrollParent=this.targetElement.fastClickScrollParent),"label"===(a=l.tagName.toLowerCase())){if(e=this.findControl(l)){if(this.focus(l),n)return!1;l=e}}else if(this.needsFocus(l))return t.timeStamp-s>100||r&&window.top!==window&&"input"===a?(this.targetElement=null,!1):(this.focus(l),this.sendClick(l,t),r&&"select"===a||(this.targetElement=null,t.preventDefault()),!1);return!(!r||i||!(c=l.fastClickScrollParent)||c.fastClickLastScrollTop===c.scrollTop)||(this.needsClick(l)||(t.preventDefault(),this.sendClick(l,t)),!1)},t.prototype.onTouchCancel=function(){this.trackingClick=!1,this.targetElement=null},t.prototype.onMouse=function(t){return!this.targetElement||(!!t.forwardedTouchEvent||(!t.cancelable||(!(!this.needsClick(this.targetElement)||this.cancelNextClick)||(t.stopImmediatePropagation?t.stopImmediatePropagation():t.propagationStopped=!0,t.stopPropagation(),t.preventDefault(),!1))))},t.prototype.onClick=function(t){var e;return this.trackingClick?(this.targetElement=null,this.trackingClick=!1,!0):"submit"===t.target.type&&0===t.detail||((e=this.onMouse(t))||(this.targetElement=null),e)},t.prototype.destroy=function(){var t=this.layer;n&&(t.removeEventListener("mouseover",this.onMouse,!0),t.removeEventListener("mousedown",this.onMouse,!0),t.removeEventListener("mouseup",this.onMouse,!0)),t.removeEventListener("click",this.onClick,!0),t.removeEventListener("touchstart",this.onTouchStart,!1),t.removeEventListener("touchmove",this.onTouchMove,!1),t.removeEventListener("touchend",this.onTouchEnd,!1),t.removeEventListener("touchcancel",this.onTouchCancel,!1)},t.notNeeded=function(t){var e,r,i;if(void 0===window.ontouchstart)return!0;if(r=+(/Chrome\/([0-9]+)/.exec(navigator.userAgent)||[,0])[1]){if(!n)return!0;if(e=document.querySelector("meta[name=viewport]")){if(-1!==e.content.indexOf("user-scalable=no"))return!0;if(r>31&&document.documentElement.scrollWidth<=window.outerWidth)return!0}}if(s&&(i=navigator.userAgent.match(/Version\/([0-9]*)\.([0-9]*)/))[1]>=10&&i[2]>=3&&(e=document.querySelector("meta[name=viewport]"))){if(-1!==e.content.indexOf("user-scalable=no"))return!0;if(document.documentElement.scrollWidth<=window.outerWidth)return!0}return"none"===t.style.msTouchAction||"manipulation"===t.style.touchAction||(!!(+(/Firefox\/([0-9]+)/.exec(navigator.userAgent)||[,0])[1]>=27&&(e=document.querySelector("meta[name=viewport]"))&&(-1!==e.content.indexOf("user-scalable=no")||document.documentElement.scrollWidth<=window.outerWidth))||"none"===t.style.touchAction||"manipulation"===t.style.touchAction)},t.attach=function(e,n){return new t(e,n)},"function"==typeof define&&"object"==typeof define.amd&&define.amd?define(function(){return t}):"undefined"!=typeof module&&module.exports?(module.exports=t.attach,module.exports.FastClick=t):window.FastClick=t}(),function(){"use strict";!function(){var t,e;e=document.body,window.Uno=t={version:"2.9.0",is:function(t,n){return Array.isArray(n)?n.some(function(n){return e.dataset[t]===n}):e.dataset[t]===n},attr:function(t,n){return null!=n?e.dataset[t]=n:e.dataset[t]},context:function(){var t;return""===(t=document.body.className.split(" ")[0].split("-")[0])?"error":t},linkify:function(t){return $(t).each(function(){var t,e,n;return t=$(this),n=t.text(),e=t.attr("id"),t.html(""),t.addClass("deep-link"),t.append("<a href=#"+e+' class="title-link">'+n+"</a>")})},search:{form:function(){var t;return t=$("#search-container"),function(e){return t[e]()}}()},timeAgo:function(t){return $(t).each(function(){var t,e;return t=$(this).html(),0===(e=Math.floor((Date.now()-new Date(t))/864e5))?e="today":1===e?e="yesterday":e+=" days ago",$(this).html(e),$(this).mouseover(function(){return $(this).html(t)}),$(this).mouseout(function(){return $(this).html(e)})})},device:function(){var t;return t=window.innerWidth,window.innerHeight,t<=480?"mobile":t<=1024?"tablet":"desktop"}},t.attr("page",t.context()),t.attr("device",t.device()),window.profile_title&&$("#profile-title").text(window.profile_title),window.profile_resume&&$("#profile-resume").text(window.profile_resume),window.posts_headline&&$("#posts-headline").text(window.posts_headline),window.open_button=window.open_button||".nav-posts > a"}()}.call(this);var InstantClick=function(t,e){function n(t){var e=t.indexOf("#");return e<0?t:t.substr(0,e)}function r(t){for(;t&&"A"!=t.nodeName;)t=t.parentNode;return t}function o(t){do{if(!t.hasAttribute)break;if(t.hasAttribute("data-instant"))return!1;if(t.hasAttribute("data-no-instant"))return!0}while(t=t.parentNode);return!1}function s(t){do{if(!t.hasAttribute)break;if(t.hasAttribute("data-no-instant"))return!1;if(t.hasAttribute("data-instant"))return!0}while(t=t.parentNode);return!1}function a(t){var r=e.protocol+"//"+e.host;return!(t.target||t.hasAttribute("download")||0!=t.href.indexOf(r+"/")||t.href.indexOf("#")>-1&&n(t.href)==k||(x?!s(t):o(t)))}function c(t,e,n,r){for(var i=!1,o=0;o<Y[t].length;o++)if("receive"==t){var s=Y[t][o](e,n,r);s&&("body"in s&&(n=s.body),"title"in s&&(r=s.title),i=s)}else Y[t][o](e,n,r);return i}function u(e,r,i,o){if(t.documentElement.replaceChild(r,t.body),i){history.pushState(null,null,i);var s=i.indexOf("#"),a=s>-1&&t.getElementById(i.substr(s+1)),u=0;if(a)for(;a.offsetParent;)u+=a.offsetTop,a=a.offsetParent;scrollTo(0,u),k=n(i)}else scrollTo(0,o);O&&t.title==e?t.title=e+String.fromCharCode(160):t.title=e,y(),I.done(),c("change",!1);var l=t.createEvent("HTMLEvents");l.initEvent("instantclick:newpage",!0,!0),dispatchEvent(l)}function l(){R=!1,F=!1}function d(t){return t.replace(/<noscript[\s\S]+<\/noscript>/gi,"")}function h(t){if(!(C>+new Date-500)){var e=r(t.target);e&&a(e)&&w(e.href)}}function f(t){if(!(C>+new Date-500)){var e=r(t.target);e&&a(e)&&(e.addEventListener("mouseout",m),M?(T=e.href,E=setTimeout(w,M)):w(e.href))}}function p(t){C=+new Date;var e=r(t.target);e&&a(e)&&(L?e.removeEventListener("mousedown",h):e.removeEventListener("mouseover",f),w(e.href))}function g(t){var e=r(t.target);e&&a(e)&&(t.which>1||t.metaKey||t.ctrlKey||(t.preventDefault(),b(e.href)))}function m(){if(E)return clearTimeout(E),void(E=!1);R&&!F&&(S.abort(),l())}function v(){if(!(S.readyState<4)&&0!=S.status){if(_.ready=+new Date-_.start,S.getResponseHeader("Content-Type").match(/\/(x|ht|xht)ml/)){var e=t.implementation.createHTMLDocument("");e.documentElement.innerHTML=d(S.responseText),$=e.title,U=e.body;var r=c("receive",q,U,$);r&&("body"in r&&(U=r.body),"title"in r&&($=r.title));var i=n(q);N[i]={body:U,title:$,scrollY:i in N?N[i].scrollY:0};for(var o,s,a=e.head.children,u=0,l=a.length-1;l>=0;l--)if((o=a[l]).hasAttribute("data-instant-track")){s=o.getAttribute("href")||o.getAttribute("src")||o.innerHTML;for(var h=H.length-1;h>=0;h--)H[h]==s&&u++}u!=H.length&&(D=!0)}else D=!0;F&&(F=!1,b(q))}}function y(e){if(t.body.addEventListener("touchstart",p,!0),L?t.body.addEventListener("mousedown",h,!0):t.body.addEventListener("mouseover",f,!0),t.body.addEventListener("click",g,!0),!e){var n,r,o,s,a=t.body.getElementsByTagName("script");for(i=0,j=a.length;i<j;i++)(n=a[i]).hasAttribute("data-no-instant")||(r=t.createElement("script"),n.src&&(r.src=n.src),n.innerHTML&&(r.innerHTML=n.innerHTML),o=n.parentNode,s=n.nextSibling,o.removeChild(n),o.insertBefore(r,s))}}function w(t){!L&&"display"in _&&+new Date-(_.start+_.display)<100||(E&&(clearTimeout(E),E=!1),t||(t=T),R&&(t==q||F)||(R=!0,F=!1,q=t,U=!1,D=!1,_={start:+new Date},c("fetch"),S.open("GET",t),S.send()))}function b(t){if("display"in _||(_.display=+new Date-_.start),E||!R)return E&&q&&q!=t?void(e.href=t):(w(t),I.start(0,!0),c("wait"),void(F=!0));if(F)e.href=t;else if(D)e.href=q;else{if(!U)return I.start(0,!0),c("wait"),void(F=!0);N[k].scrollY=pageYOffset,l(),u($,U,q)}}var k,T,E,C,S,x,L,M,A=navigator.userAgent,O=A.indexOf(" CriOS/")>-1,P="createTouch"in t,N={},q=!1,$=!1,D=!1,U=!1,_={},R=!1,F=!1,H=[],Y={fetch:[],receive:[],wait:[],change:[]},I=function(){function e(e,o){l=e,t.getElementById(a.id)&&t.body.removeChild(a),a.style.opacity="1",t.getElementById(a.id)&&t.body.removeChild(a),i(),o&&setTimeout(n,0),clearTimeout(d),d=setTimeout(r,500)}function n(){l=10,i()}function r(){(l+=1+2*Math.random())>=98?l=98:d=setTimeout(r,500),i()}function i(){c.style[u]="translate("+l+"%)",t.getElementById(a.id)||t.body.appendChild(a)}function o(){if(t.getElementById(a.id))return clearTimeout(d),l=100,i(),void(a.style.opacity="0");e(100==l?0:l),setTimeout(o,0)}function s(){a.style.left=pageXOffset+"px",a.style.width=innerWidth+"px",a.style.top=pageYOffset+"px";var t="orientation"in window&&90==Math.abs(orientation),e=innerWidth/screen[t?"height":"width"]*2;a.style[u]="scaleY("+e+")"}var a,c,u,l,d;return{init:function(){(a=t.createElement("div")).id="instantclick",(c=t.createElement("div")).id="instantclick-bar",c.className="instantclick-bar",a.appendChild(c);var e=["Webkit","Moz","O"];if(!((u="transform")in c.style))for(r=0;r<3;r++)e[r]+"Transform"in c.style&&(u=e[r]+"Transform");var n="transition";if(!(n in c.style))for(var r=0;r<3;r++)e[r]+"Transition"in c.style&&(n="-"+e[r].toLowerCase()+"-"+n);var i=t.createElement("style");i.innerHTML="#instantclick{position:"+(P?"absolute":"fixed")+";top:0;left:0;width:100%;pointer-events:none;z-index:2147483647;"+n+":opacity .25s .1s}.instantclick-bar{background:#29d;width:100%;margin-left:-100%;height:2px;"+n+":all .25s}",t.head.appendChild(i),P&&(s(),addEventListener("resize",s),addEventListener("scroll",s))},start:e,done:o}}(),W="pushState"in history&&(!A.match("Android")||A.match("Chrome/"))&&"file:"!=e.protocol;return{supported:W,init:function(){if(!k)if(W){for(a=arguments.length-1;a>=0;a--){var r=arguments[a];!0===r?x=!0:"mousedown"==r?L=!0:"number"==typeof r&&(M=r)}k=n(e.href),N[k]={body:t.body,title:t.title,scrollY:pageYOffset};for(var i,o,s=t.head.children,a=s.length-1;a>=0;a--)(i=s[a]).hasAttribute("data-instant-track")&&(o=i.getAttribute("href")||i.getAttribute("src")||i.innerHTML,H.push(o));(S=new XMLHttpRequest).addEventListener("readystatechange",v),y(!0),I.init(),c("change",!0),addEventListener("popstate",function(){var t=n(e.href);t!=k&&(t in N?(N[k].scrollY=pageYOffset,k=t,u(N[t].title,N[t].body,!1,N[t].scrollY)):e.href=e.href)})}else c("change",!0)},on:function(t,e){Y[t].push(e)}}}(document,location);(function(){"use strict";$(function(){return InstantClick.init(),Uno.is("device","desktop")?$("a").not('[href*="mailto:"]').click(function(){if(-1===this.href.indexOf(location.hostname))return window.open($(this).attr("href")),!1}):FastClick.attach(Uno.app),(Uno.is("page","home")||Uno.is("page","paged")||Uno.is("page","tag"))&&Uno.timeAgo("#posts-list time"),Uno.is("page","post")&&(Uno.timeAgo(".post.meta > time"),$("main").readingTime({readingTimeTarget:".post.reading-time > span"}),Uno.linkify($("#post-content").children("h1, h2, h3, h4, h5, h6")),$(".content").fitVids()),Uno.is("page","error")&&$("#panic-button").click(function(){var t;return(t=document.createElement("script")).setAttribute("src","https://nthitz.github.io/turndownforwhatjs/tdfw.js"),document.body.appendChild(t)}),$("#search-input").keyup(function(t){return $("#search-form").attr("action",Uno.search.url+"+"+encodeURIComponent(t.target.value))})})}).call(this),function(){var t,e,n,r,i,o,s,a,c,u,l,d,h,f,p,g,m,v,y,w,b,k,T,E,C,S,x,L,M,A,O,P,N,q,$,D,U,_,R,j,F,H,Y,I,W,X,B,z,G,K=[].slice,V={}.hasOwnProperty,J=function(t,e){function n(){this.constructor=t}for(var r in e)V.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t},Q=[].indexOf||function(t){for(var e=0,n=this.length;n>e;e++)if(e in this&&this[e]===t)return e;return-1};for(b={catchupTime:100,initialRate:.03,minTime:250,ghostTime:100,maxProgressPerFrame:20,easeFactor:1.25,startOnPageLoad:!0,restartOnPushState:!0,restartOnRequestAfter:500,target:"body",elements:{checkInterval:100,selectors:["body"]},eventLag:{minSamples:10,sampleCount:3,lagThreshold:3},ajax:{trackMethods:["GET"],trackWebSockets:!0,ignoreURLs:[]}},M=function(){var t;return null!=(t="undefined"!=typeof performance&&null!==performance&&"function"==typeof performance.now?performance.now():void 0)?t:+new Date},O=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame,w=window.cancelAnimationFrame||window.mozCancelAnimationFrame,null==O&&(O=function(t){return setTimeout(t,50)},w=function(t){return clearTimeout(t)}),N=function(t){var e,n;return e=M(),(n=function(){var r;return(r=M()-e)>=33?(e=M(),t(r,function(){return O(n)})):setTimeout(n,33-r)})()},P=function(){var t,e,n;return n=arguments[0],e=arguments[1],t=3<=arguments.length?K.call(arguments,2):[],"function"==typeof n[e]?n[e].apply(n,t):n[e]},k=function(){var t,e,n,r,i,o,s;for(e=arguments[0],o=0,s=(r=2<=arguments.length?K.call(arguments,1):[]).length;s>o;o++)if(n=r[o])for(t in n)V.call(n,t)&&(i=n[t],null!=e[t]&&"object"==typeof e[t]&&null!=i&&"object"==typeof i?k(e[t],i):e[t]=i);return e},m=function(t){var e,n,r,i,o;for(n=e=0,i=0,o=t.length;o>i;i++)r=t[i],n+=Math.abs(r),e++;return n/e},E=function(t,e){var n,r,i;if(null==t&&(t="options"),null==e&&(e=!0),i=document.querySelector("[data-pace-"+t+"]")){if(n=i.getAttribute("data-pace-"+t),!e)return n;try{return JSON.parse(n)}catch(t){return r=t,"undefined"!=typeof console&&null!==console?console.error("Error parsing inline pace options",r):void 0}}},s=function(){function t(){}return t.prototype.on=function(t,e,n,r){var i;return null==r&&(r=!1),null==this.bindings&&(this.bindings={}),null==(i=this.bindings)[t]&&(i[t]=[]),this.bindings[t].push({handler:e,ctx:n,once:r})},t.prototype.once=function(t,e,n){return this.on(t,e,n,!0)},t.prototype.off=function(t,e){var n,r,i;if(null!=(null!=(r=this.bindings)?r[t]:void 0)){if(null==e)return delete this.bindings[t];for(n=0,i=[];n<this.bindings[t].length;)i.push(this.bindings[t][n].handler===e?this.bindings[t].splice(n,1):n++);return i}},t.prototype.trigger=function(){var t,e,n,r,i,o,s,a,c;if(n=arguments[0],t=2<=arguments.length?K.call(arguments,1):[],null!=(s=this.bindings)?s[n]:void 0){for(i=0,c=[];i<this.bindings[n].length;)a=this.bindings[n][i],r=a.handler,e=a.ctx,o=a.once,r.apply(null!=e?e:this,t),c.push(o?this.bindings[n].splice(i,1):i++);return c}},t}(),u=window.Pace||{},window.Pace=u,k(u,s.prototype),A=u.options=k({},b,window.paceOptions,E()),Y=0,W=(B=["ajax","document","eventLag","elements"]).length;W>Y;Y++)U=B[Y],!0===A[U]&&(A[U]=b[U]);c=function(t){function e(){return z=e.__super__.constructor.apply(this,arguments)}return J(e,t),e}(Error),e=function(){function t(){this.progress=0}return t.prototype.getElement=function(){var t;if(null==this.el){if(!(t=document.querySelector(A.target)))throw new c;this.el=document.createElement("div"),this.el.className="pace pace-active",document.body.className=document.body.className.replace(/pace-done/g,""),document.body.className+=" pace-running",this.el.innerHTML='<div class="pace-progress">\n  <div class="pace-progress-inner"></div>\n</div>\n<div class="pace-activity"></div>',null!=t.firstChild?t.insertBefore(this.el,t.firstChild):t.appendChild(this.el)}return this.el},t.prototype.finish=function(){var t;return t=this.getElement(),t.className=t.className.replace("pace-active",""),t.className+=" pace-inactive",document.body.className=document.body.className.replace("pace-running",""),document.body.className+=" pace-done"},t.prototype.update=function(t){return this.progress=t,this.render()},t.prototype.destroy=function(){try{this.getElement().parentNode.removeChild(this.getElement())}catch(t){c=t}return this.el=void 0},t.prototype.render=function(){var t,e,n,r,i,o,s;if(null==document.querySelector(A.target))return!1;for(t=this.getElement(),r="translate3d("+this.progress+"%, 0, 0)",i=0,o=(s=["webkitTransform","msTransform","transform"]).length;o>i;i++)e=s[i],t.children[0].style[e]=r;return(!this.lastRenderedProgress||this.lastRenderedProgress|0!==this.progress|0)&&(t.children[0].setAttribute("data-progress-text",(0|this.progress)+"%"),this.progress>=100?n="99":(n=this.progress<10?"0":"",n+=0|this.progress),t.children[0].setAttribute("data-progress",""+n)),this.lastRenderedProgress=this.progress},t.prototype.done=function(){return this.progress>=100},t}(),a=function(){function t(){this.bindings={}}return t.prototype.trigger=function(t,e){var n,r,i,o,s;if(null!=this.bindings[t]){for(s=[],r=0,i=(o=this.bindings[t]).length;i>r;r++)n=o[r],s.push(n.call(this,e));return s}},t.prototype.on=function(t,e){var n;return null==(n=this.bindings)[t]&&(n[t]=[]),this.bindings[t].push(e)},t}(),H=window.XMLHttpRequest,F=window.XDomainRequest,j=window.WebSocket,T=function(t,e){var n,r;r=[];for(n in e.prototype)try{r.push(null==t[n]&&"function"!=typeof e[n]?"function"==typeof Object.defineProperty?Object.defineProperty(t,n,{get:function(){return e.prototype[n]},configurable:!0,enumerable:!0}):t[n]=e.prototype[n]:void 0)}catch(t){t}return r},x=[],u.ignore=function(){var t,e,n;return e=arguments[0],t=2<=arguments.length?K.call(arguments,1):[],x.unshift("ignore"),n=e.apply(null,t),x.shift(),n},u.track=function(){var t,e,n;return e=arguments[0],t=2<=arguments.length?K.call(arguments,1):[],x.unshift("track"),n=e.apply(null,t),x.shift(),n},D=function(t){var e;if(null==t&&(t="GET"),"track"===x[0])return"force";if(!x.length&&A.ajax){if("socket"===t&&A.ajax.trackWebSockets)return!0;if(e=t.toUpperCase(),Q.call(A.ajax.trackMethods,e)>=0)return!0}return!1},l=function(t){function e(){var t,n=this;e.__super__.constructor.apply(this,arguments),t=function(t){var e;return e=t.open,t.open=function(r,i){return D(r)&&n.trigger("request",{type:r,url:i,request:t}),e.apply(t,arguments)}},window.XMLHttpRequest=function(e){var n;return n=new H(e),t(n),n};try{T(window.XMLHttpRequest,H)}catch(t){}if(null!=F){window.XDomainRequest=function(){var e;return e=new F,t(e),e};try{T(window.XDomainRequest,F)}catch(t){}}if(null!=j&&A.ajax.trackWebSockets){window.WebSocket=function(t,e){var r;return r=null!=e?new j(t,e):new j(t),D("socket")&&n.trigger("request",{type:"socket",url:t,protocols:e,request:r}),r};try{T(window.WebSocket,j)}catch(t){}}}return J(e,a),e}(),I=null,$=function(t){var e,n,r,i;for(n=0,r=(i=A.ajax.ignoreURLs).length;r>n;n++)if("string"==typeof(e=i[n])){if(-1!==t.indexOf(e))return!0}else if(e.test(t))return!0;return!1},(C=function(){return null==I&&(I=new l),I})().on("request",function(e){var n,r,i,o,s;return o=e.type,i=e.request,s=e.url,$(s)?void 0:u.running||!1===A.restartOnRequestAfter&&"force"!==D(o)?void 0:(r=arguments,"boolean"==typeof(n=A.restartOnRequestAfter||0)&&(n=0),setTimeout(function(){var e,n,s,a,c;if("socket"===o?i.readyState<2:0<(s=i.readyState)&&4>s){for(u.restart(),c=[],e=0,n=(a=u.sources).length;n>e;e++){if((U=a[e])instanceof t){U.watch.apply(U,r);break}c.push(void 0)}return c}},n))}),t=function(){function t(){var t=this;this.elements=[],C().on("request",function(){return t.watch.apply(t,arguments)})}return t.prototype.watch=function(t){var e,n,r,i;return r=t.type,e=t.request,i=t.url,$(i)?void 0:(n="socket"===r?new f(e):new p(e),this.elements.push(n))},t}(),p=function(){return function(t){var e,n,r,i,o,s=this;if(this.progress=0,null!=window.ProgressEvent)for(t.addEventListener("progress",function(t){return s.progress=t.lengthComputable?100*t.loaded/t.total:s.progress+(100-s.progress)/2},!1),o=["load","abort","timeout","error"],n=0,r=o.length;r>n;n++)e=o[n],t.addEventListener(e,function(){return s.progress=100},!1);else i=t.onreadystatechange,t.onreadystatechange=function(){var e;return 0===(e=t.readyState)||4===e?s.progress=100:3===t.readyState&&(s.progress=50),"function"==typeof i?i.apply(null,arguments):void 0}}}(),f=function(){return function(t){var e,n,r,i,o=this;for(this.progress=0,n=0,r=(i=["error","open"]).length;r>n;n++)e=i[n],t.addEventListener(e,function(){return o.progress=100},!1)}}(),r=function(){return function(t){var e,n,r,o;for(null==t&&(t={}),this.elements=[],null==t.selectors&&(t.selectors=[]),n=0,r=(o=t.selectors).length;r>n;n++)e=o[n],this.elements.push(new i(e))}}(),i=function(){function t(t){this.selector=t,this.progress=0,this.check()}return t.prototype.check=function(){var t=this;return document.querySelector(this.selector)?this.done():setTimeout(function(){return t.check()},A.elements.checkInterval)},t.prototype.done=function(){return this.progress=100},t}(),n=function(){function t(){var t,e,n=this;this.progress=null!=(e=this.states[document.readyState])?e:100,t=document.onreadystatechange,document.onreadystatechange=function(){return null!=n.states[document.readyState]&&(n.progress=n.states[document.readyState]),"function"==typeof t?t.apply(null,arguments):void 0}}return t.prototype.states={loading:0,interactive:50,complete:100},t}(),o=function(){return function(){var t,e,n,r,i,o=this;this.progress=0,t=0,i=[],r=0,n=M(),e=setInterval(function(){var s;return s=M()-n-50,n=M(),i.push(s),i.length>A.eventLag.sampleCount&&i.shift(),t=m(i),++r>=A.eventLag.minSamples&&t<A.eventLag.lagThreshold?(o.progress=100,clearInterval(e)):o.progress=3/(t+3)*100},50)}}(),h=function(){function t(t){this.source=t,this.last=this.sinceLastUpdate=0,this.rate=A.initialRate,this.catchup=0,this.progress=this.lastProgress=0,null!=this.source&&(this.progress=P(this.source,"progress"))}return t.prototype.tick=function(t,e){var n;return null==e&&(e=P(this.source,"progress")),e>=100&&(this.done=!0),e===this.last?this.sinceLastUpdate+=t:(this.sinceLastUpdate&&(this.rate=(e-this.last)/this.sinceLastUpdate),this.catchup=(e-this.progress)/A.catchupTime,this.sinceLastUpdate=0,this.last=e),e>this.progress&&(this.progress+=this.catchup*t),n=1-Math.pow(this.progress/100,A.easeFactor),this.progress+=n*this.rate*t,this.progress=Math.min(this.lastProgress+A.maxProgressPerFrame,this.progress),this.progress=Math.max(0,this.progress),this.progress=Math.min(100,this.progress),this.lastProgress=this.progress,this.progress},t}(),_=null,q=null,v=null,R=null,g=null,y=null,u.running=!1,S=function(){return A.restartOnPushState?u.restart():void 0},null!=window.history.pushState&&(X=window.history.pushState,window.history.pushState=function(){return S(),X.apply(window.history,arguments)}),null!=window.history.replaceState&&(G=window.history.replaceState,window.history.replaceState=function(){return S(),G.apply(window.history,arguments)}),d={ajax:t,elements:r,document:n,eventLag:o},(L=function(){var t,n,r,i,o,s,a,c;for(u.sources=_=[],n=0,i=(s=["ajax","elements","document","eventLag"]).length;i>n;n++)t=s[n],!1!==A[t]&&_.push(new d[t](A[t]));for(r=0,o=(c=null!=(a=A.extraSources)?a:[]).length;o>r;r++)U=c[r],_.push(new U(A));return u.bar=v=new e,q=[],R=new h})(),u.stop=function(){return u.trigger("stop"),u.running=!1,v.destroy(),y=!0,null!=g&&("function"==typeof w&&w(g),g=null),L()},u.restart=function(){return u.trigger("restart"),u.stop(),u.start()},u.go=function(){var t;return u.running=!0,v.render(),t=M(),y=!1,g=N(function(e,n){var r,i,o,s,a,c,l,d,f,p,g,m,w,b,k;for(100-v.progress,i=p=0,o=!0,c=g=0,w=_.length;w>g;c=++g)for(U=_[c],f=null!=q[c]?q[c]:q[c]=[],a=null!=(k=U.elements)?k:[U],l=m=0,b=a.length;b>m;l=++m)s=a[l],d=null!=f[l]?f[l]:f[l]=new h(s),o&=d.done,d.done||(i++,p+=d.tick(e));return r=p/i,v.update(R.tick(e,r)),v.done()||o||y?(v.update(100),u.trigger("done"),setTimeout(function(){return v.finish(),u.running=!1,u.trigger("hide")},Math.max(A.ghostTime,Math.max(A.minTime-(M()-t),0)))):n()})},u.start=function(t){k(A,t),u.running=!0;try{v.render()}catch(t){c=t}return document.querySelector(".pace")?(u.trigger("start"),u.go()):setTimeout(u.start,50)},"function"==typeof define&&define.amd?define(["pace"],function(){return u}):"object"==typeof exports?module.exports=u:A.startOnPageLoad&&u.start()}.call(this),function(t){t.fn.readingTime=function(e){if(!this.length)return this;var n={readingTimeTarget:".eta",wordCountTarget:null,wordsPerMinute:270,round:!0,lang:"en",remotePath:null,remoteTarget:null},r=this,i=t(this);r.settings=t.extend({},n,e);var o=r.settings.readingTimeTarget,s=r.settings.wordCountTarget,a=r.settings.wordsPerMinute,c=r.settings.round,u=r.settings.lang,l=r.settings.remotePath,d=r.settings.remoteTarget;if("fr"==u)var h="Moins d'une minute",f="min";else if("de"==u)var h="Weniger als eine Minute",f="min";else if("es"==u)var h="Menos de un minuto",f="min";else var h="Less than a minute",f="min";var p=function(t){var e=t.split(" ").length,n=e/(a/60),r=Math.round(n/60),u=Math.round(n-60*r);if(!0===c)r>0?i.find(o).text(r+" "+f):i.find(o).text(h);else{var l=r+":"+u;i.find(o).text(l)}""!==s&&void 0!==s&&i.find(s).text(e)};i.each(function(){null!=l&&null!=d?t.get(l,function(e){p(t(e).children().text())}):p(i.text())})}}(jQuery),function(){"use strict";$(function(){var t,e;if(t=function(){return setTimeout(function(){return $(".cover").addClass("animated")},1e3)},e=function(t){return $("main, .cover, .links > li, html").toggleClass("expanded"),Uno.search.form(t.form)},$("#menu-button").click(function(){return $(".cover, main, #menu-button, html").toggleClass("expanded")}),$(window.open_button+", #avatar-link").click(function(t){if(Uno.is("page","home"))return t.preventDefault(),location.hash=""===location.hash?"#open":"",Uno.is("device","desktop")?e({form:"toggle"}):$("#menu-button").trigger("click")}),Uno.is("device","desktop")&&Uno.is("page","home")&&(t(),"#open"!==location.hash))return e({form:"hide"})})}.call(this);
+'use strict';
+
+(function() {
+  let Uno;
+  const app = document.body;
+
+  window.Uno = (Uno = {
+    version: '2.9.0',
+
+    is(k, v) {
+      if (!Array.isArray(v)) { return app.dataset[k] === v; }
+      return v.some(v => app.dataset[k] === v);
+    },
+
+    attr(k, v) { if (v != null) { return app.dataset[k] = v; } else { return app.dataset[k]; } },
+
+    context() {
+      // get the context from the first class name of body
+      // https://github.com/TryGhost/Ghost/wiki/Context-aware-Filters-and-Helpers
+      const className = document.body.className.split(' ')[0].split('-')[0];
+      if (className === '') { return 'error'; } else { return className; }
+    },
+
+    linkify(selector) {
+      return $(selector).each(function() {
+        const el = $(this);
+        const text = el.text();
+        const id = el.attr('id');
+
+        el.html('');
+        el.addClass('deep-link');
+        return el.append(`<a href=#${id} class=\"title-link\">${text}</a>`);
+      });
+    },
+
+    search: {
+      form: (function() {
+        const context =  $('#search-container');
+        return action => context[action]();
+      })()
+    },
+
+    timeAgo(selector) {
+      return $(selector).each(function() {
+        const postDate = $(this).html();
+        let postDateInDays = Math.floor((Date.now() - new Date(postDate)) / 86400000);
+
+        if (postDateInDays === 0) { postDateInDays = 'today';
+        } else if (postDateInDays === 1) { postDateInDays = 'yesterday';
+        } else { postDateInDays = `${postDateInDays} days ago`; }
+
+        $(this).html(postDateInDays);
+        $(this).mouseover(function() { return $(this).html(postDate); });
+        return $(this).mouseout(function() { return $(this).html(postDateInDays); });
+      });
+    },
+
+    device() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      if (w <= 480) { return 'mobile'; }
+      if (w <= 1024) { return 'tablet'; }
+      return 'desktop';
+    }
+  });
+
+
+  Uno.attr('page', Uno.context());
+  Uno.attr('device', Uno.device());
+
+  // window global properties
+  if (window.profile_title) { $('#profile-title').text(window.profile_title); }
+  if (window.profile_resume) { $('#profile-resume').text(window.profile_resume); }
+  if (window.posts_headline) { $('#posts-headline').text(window.posts_headline); }
+  return window.open_button = window.open_button || '.nav-posts > a';
+})();
+
+/*!
+Name: Reading Time
+Dependencies: jQuery
+Author: Michael Lynch
+Author URL: http://michaelynch.com
+Date Created: August 14, 2013
+Date Updated: February 28, 2018
+Licensed under the MIT license
+*/
+
+;(function($) {
+
+	$.fn.readingTime = function(options) {
+
+		// define default parameters
+		const defaults = {
+			readingTimeTarget: '.eta',
+			readingTimeAsNumber: false,
+			wordCountTarget: null,
+			wordsPerMinute: 270,
+			round: true,
+			lang: 'en',
+			lessThanAMinuteString: '',
+			prependTimeString: '',
+			prependWordString: '',
+			remotePath: null,
+			remoteTarget: null,
+			success: function() {},
+			error: function() {}
+		};
+
+		const plugin = this;
+		const el = $(this);
+
+		let wordsPerSecond;
+		let lessThanAMinute;
+		let minShortForm;
+
+		let totalWords;
+		let totalReadingTimeSeconds;
+
+		let readingTimeMinutes;
+		let readingTimeSeconds;
+		let readingTime;
+		let readingTimeObj;
+
+		// merge defaults and options
+		plugin.settings = $.extend({}, defaults, options);
+
+		// define vars
+		const s = plugin.settings;
+
+		const setTime = function(o) {
+
+			if(o.text !== '') {
+
+				//split text by spaces to define total words
+				totalWords = o.text.trim().split(/\s+/g).length;
+
+				//define words per second based on words per minute (s.wordsPerMinute)
+				wordsPerSecond = s.wordsPerMinute / 60;
+
+				//define total reading time in seconds
+				totalReadingTimeSeconds = totalWords / wordsPerSecond;
+
+				// define reading time
+				readingTimeMinutes = Math.floor(totalReadingTimeSeconds / 60);
+
+				// define remaining reading time seconds
+				readingTimeSeconds = Math.round(totalReadingTimeSeconds - (readingTimeMinutes * 60));
+
+				// format reading time
+				readingTime = `${readingTimeMinutes}:${readingTimeSeconds}`;
+
+				// if s.round
+				if(s.round) {
+
+					// if minutes are greater than 0
+					if(readingTimeMinutes > 0) {
+
+						// set reading time by the minute
+						$(s.readingTimeTarget).text(s.prependTimeString + readingTimeMinutes + ((!s.readingTimeAsNumber) ? ' ' + minShortForm : ''));
+
+					} else {
+
+						// set reading time as less than a minute
+						$(s.readingTimeTarget).text((!s.readingTimeAsNumber) ? s.prependTimeString + lessThanAMinute : readingTimeMinutes);
+					}
+
+				} else {
+
+					// set reading time in minutes and seconds
+					$(s.readingTimeTarget).text(s.prependTimeString + readingTime);
+				}
+
+				// if word count container isn't blank or undefined
+				if(s.wordCountTarget !== '' && s.wordCountTarget !== undefined) {
+
+					// set word count
+					$(s.wordCountTarget).text(s.prependWordString + totalWords);
+				}
+
+				readingTimeObj = {
+					wpm: s.wordsPerMinute,
+					words: totalWords,
+					eta: {
+						time: readingTime,
+						minutes: readingTimeMinutes,
+						seconds: totalReadingTimeSeconds
+					}
+				};
+
+				// run success callback
+				s.success.call(this, readingTimeObj);
+
+			} else {
+
+				// run error callback
+				s.error.call(this, {
+					error: 'The element does not contain any text'
+				});
+			}
+		};
+
+		// if no element was bound
+		if(!this.length) {
+
+			// run error callback
+			s.error.call(this, {
+				error: 'The element could not be found'
+			});
+
+			// return so chained events can continue
+			return this;
+		}
+
+		// Use switch instead of ifs
+		switch (s.lang) {
+			// if s.lang is Arabic
+			case 'ar':
+        lessThanAMinute = s.lessThanAMinuteString || "أقل من دقيقة";
+        minShortForm = 'دقيقة';
+        break;
+			// if s.lang is Czech
+			case 'cz':
+        lessThanAMinute = s.lessThanAMinuteString || "Méně než minutu";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Danish
+			case 'da':
+        lessThanAMinute = s.lessThanAMinuteString || "Mindre end et minut";
+        minShortForm = 'min';
+        break;
+			// if s.lang is German
+      case 'de':
+        lessThanAMinute = s.lessThanAMinuteString || "Weniger als eine Minute";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Spanish
+      case 'es':
+        lessThanAMinute = s.lessThanAMinuteString || "Menos de un minuto";
+        minShortForm = 'min';
+        break;
+			// if s.lang is French
+      case 'fr':
+        lessThanAMinute = s.lessThanAMinuteString || "Moins d'une minute";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Hungarian
+      case 'hu':
+        lessThanAMinute = s.lessThanAMinuteString || "Kevesebb mint egy perc";
+        minShortForm = 'perc';
+        break;
+			// if s.lang is Icelandic
+      case 'is':
+        lessThanAMinute = s.lessThanAMinuteString || "Minna en eina mínútu";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Italian
+      case 'it':
+        lessThanAMinute = s.lessThanAMinuteString || "Meno di un minuto";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Dutch
+      case 'nl':
+        lessThanAMinute = s.lessThanAMinuteString || "Minder dan een minuut";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Norwegian
+      case 'no':
+        lessThanAMinute = s.lessThanAMinuteString || "Mindre enn ett minutt";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Polish
+      case 'pl':
+        lessThanAMinute = s.lessThanAMinuteString || "Mniej niż minutę";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Russian
+      case 'ru':
+        lessThanAMinute = s.lessThanAMinuteString || "Меньше минуты";
+        minShortForm = 'мин';
+        break;
+			// if s.lang is Slovak
+      case 'sk':
+        lessThanAMinute = s.lessThanAMinuteString || "Menej než minútu";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Swedish
+      case 'sv':
+        lessThanAMinute = s.lessThanAMinuteString || "Mindre än en minut";
+        minShortForm = 'min';
+        break;
+			// if s.lang is Turkish
+      case 'tr':
+        lessThanAMinute = s.lessThanAMinuteString || "Bir dakikadan az";
+        minShortForm = 'dk';
+        break;
+			// if s.lang is Ukrainian
+      case 'uk':
+        lessThanAMinute = s.lessThanAMinuteString || "Менше хвилини";
+        minShortForm = 'хв';
+        break;
+			// if s.lang is Greek
+			case 'el':
+        lessThanAMinute = s.lessThanAMinuteString || 'Λιγότερο από λεπτό';
+        minShortForm = 'λεπτά';
+        break;
+			// default s.lang in english
+			default:
+        lessThanAMinute = s.lessThanAMinuteString || 'Less than a minute';
+        minShortForm = 'min';
+    }
+
+		// for each element
+		el.each(function(index) {
+
+			// if s.remotePath and s.remoteTarget aren't null
+			if(s.remotePath != null && s.remoteTarget != null) {
+
+				// get contents of remote file
+				$.get(s.remotePath, function(data) {
+
+					// set time using the remote target found in the remote file
+					setTime({
+						text: $('<div>').html(data).find(s.remoteTarget).text()
+					});
+				});
+
+			} else {
+
+				// set time using the targeted element
+				setTime({
+					text: el.text()
+				});
+			}
+		});
+
+		return true;
+	}
+})(jQuery);
+
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+'use strict';
+
+$(function() {
+
+  InstantClick.init();
+
+  if (Uno.is('device', 'desktop')) {
+    $('a').not('[href*="mailto:"]').click(function() {
+      if (this.href.indexOf(location.hostname) === -1) {
+        window.open($(this).attr('href'));
+        return false;
+      }
+    });
+  } else {
+    FastClick.attach(Uno.app);
+  }
+
+  if (Uno.is('page', 'home') || Uno.is('page', 'paged') || Uno.is('page', 'tag')) {
+    Uno.timeAgo('#posts-list time');
+  }
+
+  if (Uno.is('page', 'post')) {
+    Uno.timeAgo('.post.meta > time');
+    $('main').readingTime({readingTimeTarget: '.post.reading-time > span'});
+    Uno.linkify($('#post-content').children('h1, h2, h3, h4, h5, h6'));
+    $('.content').fitVids();
+  }
+
+  if (Uno.is('page', 'error')) {
+    $('#panic-button').click(function() {
+      const s = document.createElement('script');
+      s.setAttribute('src','https://nthitz.github.io/turndownforwhatjs/tdfw.js');
+      return document.body.appendChild(s);
+    });
+  }
+
+  return $('#search-input').keyup(e => $('#search-form').attr('action', Uno.search.url + '+' + encodeURIComponent(e.target.value)));
+});
+
+;(function () {
+	'use strict';
+
+	/**
+	 * @preserve FastClick: polyfill to remove click delays on browsers with touch UIs.
+	 *
+	 * @codingstandard ftlabs-jsv2
+	 * @copyright The Financial Times Limited [All Rights Reserved]
+	 * @license MIT License (see LICENSE.txt)
+	 */
+
+	/*jslint browser:true, node:true*/
+	/*global define, Event, Node*/
+
+
+	/**
+	 * Instantiate fast-clicking listeners on the specified layer.
+	 *
+	 * @constructor
+	 * @param {Element} layer The layer to listen on
+	 * @param {Object} [options={}] The options to override the defaults
+	 */
+	function FastClick(layer, options) {
+		var oldOnClick;
+
+		options = options || {};
+
+		/**
+		 * Whether a click is currently being tracked.
+		 *
+		 * @type boolean
+		 */
+		this.trackingClick = false;
+
+
+		/**
+		 * Timestamp for when click tracking started.
+		 *
+		 * @type number
+		 */
+		this.trackingClickStart = 0;
+
+
+		/**
+		 * The element being tracked for a click.
+		 *
+		 * @type EventTarget
+		 */
+		this.targetElement = null;
+
+
+		/**
+		 * X-coordinate of touch start event.
+		 *
+		 * @type number
+		 */
+		this.touchStartX = 0;
+
+
+		/**
+		 * Y-coordinate of touch start event.
+		 *
+		 * @type number
+		 */
+		this.touchStartY = 0;
+
+
+		/**
+		 * ID of the last touch, retrieved from Touch.identifier.
+		 *
+		 * @type number
+		 */
+		this.lastTouchIdentifier = 0;
+
+
+		/**
+		 * Touchmove boundary, beyond which a click will be cancelled.
+		 *
+		 * @type number
+		 */
+		this.touchBoundary = options.touchBoundary || 10;
+
+
+		/**
+		 * The FastClick layer.
+		 *
+		 * @type Element
+		 */
+		this.layer = layer;
+
+		/**
+		 * The minimum time between tap(touchstart and touchend) events
+		 *
+		 * @type number
+		 */
+		this.tapDelay = options.tapDelay || 200;
+
+		/**
+		 * The maximum time for a tap
+		 *
+		 * @type number
+		 */
+		this.tapTimeout = options.tapTimeout || 700;
+
+		if (FastClick.notNeeded(layer)) {
+			return;
+		}
+
+		// Some old versions of Android don't have Function.prototype.bind
+		function bind(method, context) {
+			return function() { return method.apply(context, arguments); };
+		}
+
+
+		var methods = ['onMouse', 'onClick', 'onTouchStart', 'onTouchMove', 'onTouchEnd', 'onTouchCancel'];
+		var context = this;
+		for (var i = 0, l = methods.length; i < l; i++) {
+			context[methods[i]] = bind(context[methods[i]], context);
+		}
+
+		// Set up event handlers as required
+		if (deviceIsAndroid) {
+			layer.addEventListener('mouseover', this.onMouse, true);
+			layer.addEventListener('mousedown', this.onMouse, true);
+			layer.addEventListener('mouseup', this.onMouse, true);
+		}
+
+		layer.addEventListener('click', this.onClick, true);
+		layer.addEventListener('touchstart', this.onTouchStart, false);
+		layer.addEventListener('touchmove', this.onTouchMove, false);
+		layer.addEventListener('touchend', this.onTouchEnd, false);
+		layer.addEventListener('touchcancel', this.onTouchCancel, false);
+
+		// Hack is required for browsers that don't support Event#stopImmediatePropagation (e.g. Android 2)
+		// which is how FastClick normally stops click events bubbling to callbacks registered on the FastClick
+		// layer when they are cancelled.
+		if (!Event.prototype.stopImmediatePropagation) {
+			layer.removeEventListener = function(type, callback, capture) {
+				var rmv = Node.prototype.removeEventListener;
+				if (type === 'click') {
+					rmv.call(layer, type, callback.hijacked || callback, capture);
+				} else {
+					rmv.call(layer, type, callback, capture);
+				}
+			};
+
+			layer.addEventListener = function(type, callback, capture) {
+				var adv = Node.prototype.addEventListener;
+				if (type === 'click') {
+					adv.call(layer, type, callback.hijacked || (callback.hijacked = function(event) {
+						if (!event.propagationStopped) {
+							callback(event);
+						}
+					}), capture);
+				} else {
+					adv.call(layer, type, callback, capture);
+				}
+			};
+		}
+
+		// If a handler is already declared in the element's onclick attribute, it will be fired before
+		// FastClick's onClick handler. Fix this by pulling out the user-defined handler function and
+		// adding it as listener.
+		if (typeof layer.onclick === 'function') {
+
+			// Android browser on at least 3.2 requires a new reference to the function in layer.onclick
+			// - the old one won't work if passed to addEventListener directly.
+			oldOnClick = layer.onclick;
+			layer.addEventListener('click', function(event) {
+				oldOnClick(event);
+			}, false);
+			layer.onclick = null;
+		}
+	}
+
+	/**
+	* Windows Phone 8.1 fakes user agent string to look like Android and iPhone.
+	*
+	* @type boolean
+	*/
+	var deviceIsWindowsPhone = navigator.userAgent.indexOf("Windows Phone") >= 0;
+
+	/**
+	 * Android requires exceptions.
+	 *
+	 * @type boolean
+	 */
+	var deviceIsAndroid = navigator.userAgent.indexOf('Android') > 0 && !deviceIsWindowsPhone;
+
+
+	/**
+	 * iOS requires exceptions.
+	 *
+	 * @type boolean
+	 */
+	var deviceIsIOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !deviceIsWindowsPhone;
+
+
+	/**
+	 * iOS 4 requires an exception for select elements.
+	 *
+	 * @type boolean
+	 */
+	var deviceIsIOS4 = deviceIsIOS && (/OS 4_\d(_\d)?/).test(navigator.userAgent);
+
+
+	/**
+	 * iOS 6.0-7.* requires the target element to be manually derived
+	 *
+	 * @type boolean
+	 */
+	var deviceIsIOSWithBadTarget = deviceIsIOS && (/OS [6-7]_\d/).test(navigator.userAgent);
+
+	/**
+	 * BlackBerry requires exceptions.
+	 *
+	 * @type boolean
+	 */
+	var deviceIsBlackBerry10 = navigator.userAgent.indexOf('BB10') > 0;
+
+	/**
+	 * Determine whether a given element requires a native click.
+	 *
+	 * @param {EventTarget|Element} target Target DOM element
+	 * @returns {boolean} Returns true if the element needs a native click
+	 */
+	FastClick.prototype.needsClick = function(target) {
+		switch (target.nodeName.toLowerCase()) {
+
+		// Don't send a synthetic click to disabled inputs (issue #62)
+		case 'button':
+		case 'select':
+		case 'textarea':
+			if (target.disabled) {
+				return true;
+			}
+
+			break;
+		case 'input':
+
+			// File inputs need real clicks on iOS 6 due to a browser bug (issue #68)
+			if ((deviceIsIOS && target.type === 'file') || target.disabled) {
+				return true;
+			}
+
+			break;
+		case 'label':
+		case 'iframe': // iOS8 homescreen apps can prevent events bubbling into frames
+		case 'video':
+			return true;
+		}
+
+		return (/\bneedsclick\b/).test(target.className);
+	};
+
+
+	/**
+	 * Determine whether a given element requires a call to focus to simulate click into element.
+	 *
+	 * @param {EventTarget|Element} target Target DOM element
+	 * @returns {boolean} Returns true if the element requires a call to focus to simulate native click.
+	 */
+	FastClick.prototype.needsFocus = function(target) {
+		switch (target.nodeName.toLowerCase()) {
+		case 'textarea':
+			return true;
+		case 'select':
+			return !deviceIsAndroid;
+		case 'input':
+			switch (target.type) {
+			case 'button':
+			case 'checkbox':
+			case 'file':
+			case 'image':
+			case 'radio':
+			case 'submit':
+				return false;
+			}
+
+			// No point in attempting to focus disabled inputs
+			return !target.disabled && !target.readOnly;
+		default:
+			return (/\bneedsfocus\b/).test(target.className);
+		}
+	};
+
+
+	/**
+	 * Send a click event to the specified element.
+	 *
+	 * @param {EventTarget|Element} targetElement
+	 * @param {Event} event
+	 */
+	FastClick.prototype.sendClick = function(targetElement, event) {
+		var clickEvent, touch;
+
+		// On some Android devices activeElement needs to be blurred otherwise the synthetic click will have no effect (#24)
+		if (document.activeElement && document.activeElement !== targetElement) {
+			document.activeElement.blur();
+		}
+
+		touch = event.changedTouches[0];
+
+		// Synthesise a click event, with an extra attribute so it can be tracked
+		clickEvent = document.createEvent('MouseEvents');
+		clickEvent.initMouseEvent(this.determineEventType(targetElement), true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+		clickEvent.forwardedTouchEvent = true;
+		targetElement.dispatchEvent(clickEvent);
+	};
+
+	FastClick.prototype.determineEventType = function(targetElement) {
+
+		//Issue #159: Android Chrome Select Box does not open with a synthetic click event
+		if (deviceIsAndroid && targetElement.tagName.toLowerCase() === 'select') {
+			return 'mousedown';
+		}
+
+		return 'click';
+	};
+
+
+	/**
+	 * @param {EventTarget|Element} targetElement
+	 */
+	FastClick.prototype.focus = function(targetElement) {
+		var length;
+
+		// Issue #160: on iOS 7, some input elements (e.g. date datetime month) throw a vague TypeError on setSelectionRange. These elements don't have an integer value for the selectionStart and selectionEnd properties, but unfortunately that can't be used for detection because accessing the properties also throws a TypeError. Just check the type instead. Filed as Apple bug #15122724.
+		if (deviceIsIOS && targetElement.setSelectionRange && targetElement.type.indexOf('date') !== 0 && targetElement.type !== 'time' && targetElement.type !== 'month') {
+			length = targetElement.value.length;
+			targetElement.setSelectionRange(length, length);
+		} else {
+			targetElement.focus();
+		}
+	};
+
+
+	/**
+	 * Check whether the given target element is a child of a scrollable layer and if so, set a flag on it.
+	 *
+	 * @param {EventTarget|Element} targetElement
+	 */
+	FastClick.prototype.updateScrollParent = function(targetElement) {
+		var scrollParent, parentElement;
+
+		scrollParent = targetElement.fastClickScrollParent;
+
+		// Attempt to discover whether the target element is contained within a scrollable layer. Re-check if the
+		// target element was moved to another parent.
+		if (!scrollParent || !scrollParent.contains(targetElement)) {
+			parentElement = targetElement;
+			do {
+				if (parentElement.scrollHeight > parentElement.offsetHeight) {
+					scrollParent = parentElement;
+					targetElement.fastClickScrollParent = parentElement;
+					break;
+				}
+
+				parentElement = parentElement.parentElement;
+			} while (parentElement);
+		}
+
+		// Always update the scroll top tracker if possible.
+		if (scrollParent) {
+			scrollParent.fastClickLastScrollTop = scrollParent.scrollTop;
+		}
+	};
+
+
+	/**
+	 * @param {EventTarget} targetElement
+	 * @returns {Element|EventTarget}
+	 */
+	FastClick.prototype.getTargetElementFromEventTarget = function(eventTarget) {
+
+		// On some older browsers (notably Safari on iOS 4.1 - see issue #56) the event target may be a text node.
+		if (eventTarget.nodeType === Node.TEXT_NODE) {
+			return eventTarget.parentNode;
+		}
+
+		return eventTarget;
+	};
+
+
+	/**
+	 * On touch start, record the position and scroll offset.
+	 *
+	 * @param {Event} event
+	 * @returns {boolean}
+	 */
+	FastClick.prototype.onTouchStart = function(event) {
+		var targetElement, touch, selection;
+
+		// Ignore multiple touches, otherwise pinch-to-zoom is prevented if both fingers are on the FastClick element (issue #111).
+		if (event.targetTouches.length > 1) {
+			return true;
+		}
+
+		targetElement = this.getTargetElementFromEventTarget(event.target);
+		touch = event.targetTouches[0];
+
+		if (deviceIsIOS) {
+
+			// Only trusted events will deselect text on iOS (issue #49)
+			selection = window.getSelection();
+			if (selection.rangeCount && !selection.isCollapsed) {
+				return true;
+			}
+
+			if (!deviceIsIOS4) {
+
+				// Weird things happen on iOS when an alert or confirm dialog is opened from a click event callback (issue #23):
+				// when the user next taps anywhere else on the page, new touchstart and touchend events are dispatched
+				// with the same identifier as the touch event that previously triggered the click that triggered the alert.
+				// Sadly, there is an issue on iOS 4 that causes some normal touch events to have the same identifier as an
+				// immediately preceeding touch event (issue #52), so this fix is unavailable on that platform.
+				// Issue 120: touch.identifier is 0 when Chrome dev tools 'Emulate touch events' is set with an iOS device UA string,
+				// which causes all touch events to be ignored. As this block only applies to iOS, and iOS identifiers are always long,
+				// random integers, it's safe to to continue if the identifier is 0 here.
+				if (touch.identifier && touch.identifier === this.lastTouchIdentifier) {
+					event.preventDefault();
+					return false;
+				}
+
+				this.lastTouchIdentifier = touch.identifier;
+
+				// If the target element is a child of a scrollable layer (using -webkit-overflow-scrolling: touch) and:
+				// 1) the user does a fling scroll on the scrollable layer
+				// 2) the user stops the fling scroll with another tap
+				// then the event.target of the last 'touchend' event will be the element that was under the user's finger
+				// when the fling scroll was started, causing FastClick to send a click event to that layer - unless a check
+				// is made to ensure that a parent layer was not scrolled before sending a synthetic click (issue #42).
+				this.updateScrollParent(targetElement);
+			}
+		}
+
+		this.trackingClick = true;
+		this.trackingClickStart = event.timeStamp;
+		this.targetElement = targetElement;
+
+		this.touchStartX = touch.pageX;
+		this.touchStartY = touch.pageY;
+
+		// Prevent phantom clicks on fast double-tap (issue #36)
+		if ((event.timeStamp - this.lastClickTime) < this.tapDelay) {
+			event.preventDefault();
+		}
+
+		return true;
+	};
+
+
+	/**
+	 * Based on a touchmove event object, check whether the touch has moved past a boundary since it started.
+	 *
+	 * @param {Event} event
+	 * @returns {boolean}
+	 */
+	FastClick.prototype.touchHasMoved = function(event) {
+		var touch = event.changedTouches[0], boundary = this.touchBoundary;
+
+		if (Math.abs(touch.pageX - this.touchStartX) > boundary || Math.abs(touch.pageY - this.touchStartY) > boundary) {
+			return true;
+		}
+
+		return false;
+	};
+
+
+	/**
+	 * Update the last position.
+	 *
+	 * @param {Event} event
+	 * @returns {boolean}
+	 */
+	FastClick.prototype.onTouchMove = function(event) {
+		if (!this.trackingClick) {
+			return true;
+		}
+
+		// If the touch has moved, cancel the click tracking
+		if (this.targetElement !== this.getTargetElementFromEventTarget(event.target) || this.touchHasMoved(event)) {
+			this.trackingClick = false;
+			this.targetElement = null;
+		}
+
+		return true;
+	};
+
+
+	/**
+	 * Attempt to find the labelled control for the given label element.
+	 *
+	 * @param {EventTarget|HTMLLabelElement} labelElement
+	 * @returns {Element|null}
+	 */
+	FastClick.prototype.findControl = function(labelElement) {
+
+		// Fast path for newer browsers supporting the HTML5 control attribute
+		if (labelElement.control !== undefined) {
+			return labelElement.control;
+		}
+
+		// All browsers under test that support touch events also support the HTML5 htmlFor attribute
+		if (labelElement.htmlFor) {
+			return document.getElementById(labelElement.htmlFor);
+		}
+
+		// If no for attribute exists, attempt to retrieve the first labellable descendant element
+		// the list of which is defined here: http://www.w3.org/TR/html5/forms.html#category-label
+		return labelElement.querySelector('button, input:not([type=hidden]), keygen, meter, output, progress, select, textarea');
+	};
+
+
+	/**
+	 * On touch end, determine whether to send a click event at once.
+	 *
+	 * @param {Event} event
+	 * @returns {boolean}
+	 */
+	FastClick.prototype.onTouchEnd = function(event) {
+		var forElement, trackingClickStart, targetTagName, scrollParent, touch, targetElement = this.targetElement;
+
+		if (!this.trackingClick) {
+			return true;
+		}
+
+		// Prevent phantom clicks on fast double-tap (issue #36)
+		if ((event.timeStamp - this.lastClickTime) < this.tapDelay) {
+			this.cancelNextClick = true;
+			return true;
+		}
+
+		if ((event.timeStamp - this.trackingClickStart) > this.tapTimeout) {
+			return true;
+		}
+
+		// Reset to prevent wrong click cancel on input (issue #156).
+		this.cancelNextClick = false;
+
+		this.lastClickTime = event.timeStamp;
+
+		trackingClickStart = this.trackingClickStart;
+		this.trackingClick = false;
+		this.trackingClickStart = 0;
+
+		// On some iOS devices, the targetElement supplied with the event is invalid if the layer
+		// is performing a transition or scroll, and has to be re-detected manually. Note that
+		// for this to function correctly, it must be called *after* the event target is checked!
+		// See issue #57; also filed as rdar://13048589 .
+		if (deviceIsIOSWithBadTarget) {
+			touch = event.changedTouches[0];
+
+			// In certain cases arguments of elementFromPoint can be negative, so prevent setting targetElement to null
+			targetElement = document.elementFromPoint(touch.pageX - window.pageXOffset, touch.pageY - window.pageYOffset) || targetElement;
+			targetElement.fastClickScrollParent = this.targetElement.fastClickScrollParent;
+		}
+
+		targetTagName = targetElement.tagName.toLowerCase();
+		if (targetTagName === 'label') {
+			forElement = this.findControl(targetElement);
+			if (forElement) {
+				this.focus(targetElement);
+				if (deviceIsAndroid) {
+					return false;
+				}
+
+				targetElement = forElement;
+			}
+		} else if (this.needsFocus(targetElement)) {
+
+			// Case 1: If the touch started a while ago (best guess is 100ms based on tests for issue #36) then focus will be triggered anyway. Return early and unset the target element reference so that the subsequent click will be allowed through.
+			// Case 2: Without this exception for input elements tapped when the document is contained in an iframe, then any inputted text won't be visible even though the value attribute is updated as the user types (issue #37).
+			if ((event.timeStamp - trackingClickStart) > 100 || (deviceIsIOS && window.top !== window && targetTagName === 'input')) {
+				this.targetElement = null;
+				return false;
+			}
+
+			this.focus(targetElement);
+			this.sendClick(targetElement, event);
+
+			// Select elements need the event to go through on iOS 4, otherwise the selector menu won't open.
+			// Also this breaks opening selects when VoiceOver is active on iOS6, iOS7 (and possibly others)
+			if (!deviceIsIOS || targetTagName !== 'select') {
+				this.targetElement = null;
+				event.preventDefault();
+			}
+
+			return false;
+		}
+
+		if (deviceIsIOS && !deviceIsIOS4) {
+
+			// Don't send a synthetic click event if the target element is contained within a parent layer that was scrolled
+			// and this tap is being used to stop the scrolling (usually initiated by a fling - issue #42).
+			scrollParent = targetElement.fastClickScrollParent;
+			if (scrollParent && scrollParent.fastClickLastScrollTop !== scrollParent.scrollTop) {
+				return true;
+			}
+		}
+
+		// Prevent the actual click from going though - unless the target node is marked as requiring
+		// real clicks or if it is in the whitelist in which case only non-programmatic clicks are permitted.
+		if (!this.needsClick(targetElement)) {
+			event.preventDefault();
+			this.sendClick(targetElement, event);
+		}
+
+		return false;
+	};
+
+
+	/**
+	 * On touch cancel, stop tracking the click.
+	 *
+	 * @returns {void}
+	 */
+	FastClick.prototype.onTouchCancel = function() {
+		this.trackingClick = false;
+		this.targetElement = null;
+	};
+
+
+	/**
+	 * Determine mouse events which should be permitted.
+	 *
+	 * @param {Event} event
+	 * @returns {boolean}
+	 */
+	FastClick.prototype.onMouse = function(event) {
+
+		// If a target element was never set (because a touch event was never fired) allow the event
+		if (!this.targetElement) {
+			return true;
+		}
+
+		if (event.forwardedTouchEvent) {
+			return true;
+		}
+
+		// Programmatically generated events targeting a specific element should be permitted
+		if (!event.cancelable) {
+			return true;
+		}
+
+		// Derive and check the target element to see whether the mouse event needs to be permitted;
+		// unless explicitly enabled, prevent non-touch click events from triggering actions,
+		// to prevent ghost/doubleclicks.
+		if (!this.needsClick(this.targetElement) || this.cancelNextClick) {
+
+			// Prevent any user-added listeners declared on FastClick element from being fired.
+			if (event.stopImmediatePropagation) {
+				event.stopImmediatePropagation();
+			} else {
+
+				// Part of the hack for browsers that don't support Event#stopImmediatePropagation (e.g. Android 2)
+				event.propagationStopped = true;
+			}
+
+			// Cancel the event
+			event.stopPropagation();
+			event.preventDefault();
+
+			return false;
+		}
+
+		// If the mouse event is permitted, return true for the action to go through.
+		return true;
+	};
+
+
+	/**
+	 * On actual clicks, determine whether this is a touch-generated click, a click action occurring
+	 * naturally after a delay after a touch (which needs to be cancelled to avoid duplication), or
+	 * an actual click which should be permitted.
+	 *
+	 * @param {Event} event
+	 * @returns {boolean}
+	 */
+	FastClick.prototype.onClick = function(event) {
+		var permitted;
+
+		// It's possible for another FastClick-like library delivered with third-party code to fire a click event before FastClick does (issue #44). In that case, set the click-tracking flag back to false and return early. This will cause onTouchEnd to return early.
+		if (this.trackingClick) {
+			this.targetElement = null;
+			this.trackingClick = false;
+			return true;
+		}
+
+		// Very odd behaviour on iOS (issue #18): if a submit element is present inside a form and the user hits enter in the iOS simulator or clicks the Go button on the pop-up OS keyboard the a kind of 'fake' click event will be triggered with the submit-type input element as the target.
+		if (event.target.type === 'submit' && event.detail === 0) {
+			return true;
+		}
+
+		permitted = this.onMouse(event);
+
+		// Only unset targetElement if the click is not permitted. This will ensure that the check for !targetElement in onMouse fails and the browser's click doesn't go through.
+		if (!permitted) {
+			this.targetElement = null;
+		}
+
+		// If clicks are permitted, return true for the action to go through.
+		return permitted;
+	};
+
+
+	/**
+	 * Remove all FastClick's event listeners.
+	 *
+	 * @returns {void}
+	 */
+	FastClick.prototype.destroy = function() {
+		var layer = this.layer;
+
+		if (deviceIsAndroid) {
+			layer.removeEventListener('mouseover', this.onMouse, true);
+			layer.removeEventListener('mousedown', this.onMouse, true);
+			layer.removeEventListener('mouseup', this.onMouse, true);
+		}
+
+		layer.removeEventListener('click', this.onClick, true);
+		layer.removeEventListener('touchstart', this.onTouchStart, false);
+		layer.removeEventListener('touchmove', this.onTouchMove, false);
+		layer.removeEventListener('touchend', this.onTouchEnd, false);
+		layer.removeEventListener('touchcancel', this.onTouchCancel, false);
+	};
+
+
+	/**
+	 * Check whether FastClick is needed.
+	 *
+	 * @param {Element} layer The layer to listen on
+	 */
+	FastClick.notNeeded = function(layer) {
+		var metaViewport;
+		var chromeVersion;
+		var blackberryVersion;
+		var firefoxVersion;
+
+		// Devices that don't support touch don't need FastClick
+		if (typeof window.ontouchstart === 'undefined') {
+			return true;
+		}
+
+		// Chrome version - zero for other browsers
+		chromeVersion = +(/Chrome\/([0-9]+)/.exec(navigator.userAgent) || [,0])[1];
+
+		if (chromeVersion) {
+
+			if (deviceIsAndroid) {
+				metaViewport = document.querySelector('meta[name=viewport]');
+
+				if (metaViewport) {
+					// Chrome on Android with user-scalable="no" doesn't need FastClick (issue #89)
+					if (metaViewport.content.indexOf('user-scalable=no') !== -1) {
+						return true;
+					}
+					// Chrome 32 and above with width=device-width or less don't need FastClick
+					if (chromeVersion > 31 && document.documentElement.scrollWidth <= window.outerWidth) {
+						return true;
+					}
+				}
+
+			// Chrome desktop doesn't need FastClick (issue #15)
+			} else {
+				return true;
+			}
+		}
+
+		if (deviceIsBlackBerry10) {
+			blackberryVersion = navigator.userAgent.match(/Version\/([0-9]*)\.([0-9]*)/);
+
+			// BlackBerry 10.3+ does not require Fastclick library.
+			// https://github.com/ftlabs/fastclick/issues/251
+			if (blackberryVersion[1] >= 10 && blackberryVersion[2] >= 3) {
+				metaViewport = document.querySelector('meta[name=viewport]');
+
+				if (metaViewport) {
+					// user-scalable=no eliminates click delay.
+					if (metaViewport.content.indexOf('user-scalable=no') !== -1) {
+						return true;
+					}
+					// width=device-width (or less than device-width) eliminates click delay.
+					if (document.documentElement.scrollWidth <= window.outerWidth) {
+						return true;
+					}
+				}
+			}
+		}
+
+		// IE10 with -ms-touch-action: none or manipulation, which disables double-tap-to-zoom (issue #97)
+		if (layer.style.msTouchAction === 'none' || layer.style.touchAction === 'manipulation') {
+			return true;
+		}
+
+		// Firefox version - zero for other browsers
+		firefoxVersion = +(/Firefox\/([0-9]+)/.exec(navigator.userAgent) || [,0])[1];
+
+		if (firefoxVersion >= 27) {
+			// Firefox 27+ does not have tap delay if the content is not zoomable - https://bugzilla.mozilla.org/show_bug.cgi?id=922896
+
+			metaViewport = document.querySelector('meta[name=viewport]');
+			if (metaViewport && (metaViewport.content.indexOf('user-scalable=no') !== -1 || document.documentElement.scrollWidth <= window.outerWidth)) {
+				return true;
+			}
+		}
+
+		// IE11: prefixed -ms-touch-action is no longer supported and it's recomended to use non-prefixed version
+		// http://msdn.microsoft.com/en-us/library/windows/apps/Hh767313.aspx
+		if (layer.style.touchAction === 'none' || layer.style.touchAction === 'manipulation') {
+			return true;
+		}
+
+		return false;
+	};
+
+
+	/**
+	 * Factory method for creating a FastClick object
+	 *
+	 * @param {Element} layer The layer to listen on
+	 * @param {Object} [options={}] The options to override the defaults
+	 */
+	FastClick.attach = function(layer, options) {
+		return new FastClick(layer, options);
+	};
+
+
+	if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+
+		// AMD. Register as an anonymous module.
+		define(function() {
+			return FastClick;
+		});
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = FastClick.attach;
+		module.exports.FastClick = FastClick;
+	} else {
+		window.FastClick = FastClick;
+	}
+}());
+
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+'use strict';
+
+$(function() {
+
+  const _animate = () =>
+    setTimeout(() => $('.cover').addClass('animated')
+    , 1000)
+  ;
+
+  const _expand = function(options){
+    $('main, .cover, .links > li, html').toggleClass('expanded');
+    return Uno.search.form(options.form);
+  };
+
+  $('#menu-button').click(() => $('.cover, main, #menu-button, html').toggleClass('expanded'));
+
+  $(`${window.open_button}, #avatar-link`).click(function(event) {
+    if (Uno.is('page', 'home')) {
+      event.preventDefault();
+      location.hash = location.hash === '' ? '#open' : '';
+      if (!Uno.is('device', 'desktop')) { return $('#menu-button').trigger('click'); }
+      return _expand({form: 'toggle'});
+    }
+  });
+
+  if ((Uno.is('device', 'desktop')) && (Uno.is('page', 'home'))) {
+    _animate();
+    if (location.hash !== '#open') { return _expand({form: 'hide'}); }
+  }
+});
+
+// Moved to ./dist/instantclick.js
+
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):e.InstantClick=t()}(this,function(){"use strict";return function(e,t,n){function r(e){var t=e.indexOf("#");return-1==t?e:e.substr(0,t)}function i(e){for(;e&&"A"!=e.nodeName;)e=e.parentNode;return e}function o(e){do{if(!e.hasAttribute)break;if(e.hasAttribute("data-instant"))return!1;if(e.hasAttribute("data-no-instant"))return!0}while(e=e.parentNode);return!1}function a(e){var n=t.protocol+"//"+t.host;return!(e.target||e.hasAttribute("download")||0!=e.href.indexOf(n+"/")||e.href.indexOf("#")>-1&&r(e.href)==I||o(e))}function f(e){for(var t=Array.prototype.slice.call(arguments,1),n=!1,r=0;r<ee[e].length;r++)if("receive"==e){var i=ee[e][r].apply(window,t);i&&("body"in i&&(t[1]=i.body),"title"in i&&(t[2]=i.title),n=i)}else ee[e][r].apply(window,t);return n}function l(i,o,a,l){if(c(),e.documentElement.replaceChild(o,e.body),e.title=i,a){v("remove"),a!=t.href&&(history.pushState(null,null,a),n.indexOf(" CriOS/")>-1&&(e.title==i?e.title=i+String.fromCharCode(160):e.title=i));var s=a.indexOf("#"),h=s>-1&&e.getElementById(a.substr(s+1)),m=0;if(h)for(;h.offsetParent;)m+=h.offsetTop,h=h.offsetParent;"requestAnimationFrame"in window?requestAnimationFrame(function(){scrollTo(0,m)}):scrollTo(0,m),u(),(I=r(a))in re&&(re[I]=[]),te[I]={},g(function(e){return!e.hasAttribute("data-instant-track")}),f("change",!1)}else scrollTo(0,l),R.abort(),d(),g(function(e){return e.hasAttribute("data-instant-restore")}),p(),f("restore")}function d(){Q=!1,V=!1}function s(e){return e.replace(/<noscript[\s\S]+?<\/noscript>/gi,"")}function c(){for(var e=0;e<ne.length;e++)"object"==typeof ne[e]&&"abort"in ne[e]&&(ne[e].instantclickAbort=!0,ne[e].abort());ne=[]}function u(){for(var e in te[I]){var t=te[I][e];window.clearTimeout(t.realId),t.delayLeft=t.delay-+new Date+t.timestamp}}function p(){for(var e in te[I])if("delayLeft"in te[I][e]){for(var t=[te[I][e].callback,te[I][e].delayLeft],n=0;n<te[I][e].params.length;n++)t.push(te[I][e].params[n]);y(t,te[I][e].isRepeating,te[I][e].delay),delete te[I][e]}}function h(){R.abort(),d()}function v(e){if(I in re)for(var t=0;t<re[I].length;t++)window[e+"EventListener"].apply(window,re[I][t])}function g(t){var n,r,i,o,a,f=e.body.getElementsByTagName("script"),l=[];for(a=0;a<f.length;a++)l.push(f[a]);for(a=0;a<l.length;a++)if((n=l[a])&&t(n)){r=e.createElement("script");for(var d=0;d<n.attributes.length;d++)r.setAttribute(n.attributes[d].name,n.attributes[d].value);r.textContent=n.textContent,i=n.parentNode,o=n.nextSibling,i.removeChild(n),i.insertBefore(r,o)}}function m(){for(var t,n,r=e.querySelectorAll("[data-instant-track]"),i=0;i<r.length;i++)n=(t=r[i]).getAttribute("href")||t.getAttribute("src")||t.textContent,$.push(n)}function y(e,t,n){var r,i=e[0],o=e[1],a=[].slice.call(e,2),f=+new Date,l=++G;r=t?function(t){i(t),delete te[I][l],e[0]=i,e[1]=o,y(e,!0)}:function(e){i(e),delete te[I][l]},e[0]=r,void 0!=n&&(f+=o-n,o=n);var d=window.setTimeout.apply(window,e);return te[I][l]={realId:d,timestamp:f,callback:i,delay:o,params:a,isRepeating:t},-l}function b(e){var t=i(e.target);t&&a(t)&&T(t.href)}function w(e){if(!(B>+new Date-500||+new Date-J<100)){var t=i(e.target);t&&t!=i(e.relatedTarget)&&a(t)&&(t.addEventListener("mouseout",L),V||(M=t.href,N=O(T,_)))}}function E(e){B=+new Date;var t=i(e.target);t&&a(t)&&(H&&(D(H),H=!1),t.addEventListener("touchend",k),t.addEventListener("touchcancel",k),T(t.href))}function x(){e.addEventListener("click",A)}function A(t){if(e.removeEventListener("click",A),H&&(D(H),H=!1),!t.defaultPrevented){var n=i(t.target);n&&a(n)&&(0!=t.button||t.metaKey||t.ctrlKey||(t.preventDefault(),C(n.href)))}}function L(e){if(i(e.target)!=i(e.relatedTarget))return N?(D(N),void(N=!1)):void(Q&&!V&&(R.abort(),d()))}function k(e){Q&&!V&&(H=O(h,500))}function P(){if(2==R.readyState){var n=R.getResponseHeader("Content-Type");n&&/^text\/html/i.test(n)||(Y=!0)}if(!(R.readyState<4)){if(0==R.status)return Z=!0,void(V&&(f("exit",W,"network error"),t.href=W));if(Y)V&&(f("exit",W,"non-html content-type"),t.href=W);else{var i=e.implementation.createHTMLDocument("");i.documentElement.innerHTML=s(R.responseText),X=i.title,z=i.body;var o=f("receive",W,z,X);o&&("body"in o&&(z=o.body),"title"in o&&(X=o.title));var a=r(W);U[a]={body:z,title:X,scrollPosition:a in U?U[a].scrollPosition:0};var l,d,c=i.querySelectorAll("[data-instant-track]");if(c.length!=$.length)j=!0;else for(var u=0;u<c.length;u++)d=(l=c[u]).getAttribute("href")||l.getAttribute("src")||l.textContent,-1==$.indexOf(d)&&(j=!0);V&&(V=!1,C(W))}}}function S(){var e=r(t.href);if(e!=I){if(V&&(d(),R.abort()),!(e in U))return f("exit",t.href,"not in history"),void(e==t.href?t.href=t.href:t.reload());U[I].scrollPosition=pageYOffset,u(),v("remove"),I=e,l(U[e].title,U[e].body,!1,U[e].scrollPosition),v("add")}}function T(e){N&&(D(N),N=!1),e||(e=M),Q&&(e==W||V)||(Q=!0,V=!1,W=e,z=!1,Y=!1,Z=!1,j=!1,f("preload"),R.open("GET",e),R.timeout=9e4,R.send())}function C(e){return J=+new Date,N||!Q?N&&W&&W!=e?(f("exit",e,"click occured while preloading planned"),void(t.href=e)):(T(e),f("wait"),void(V=!0)):V?(f("exit",e,"clicked on a link while waiting for another page to display"),void(t.href=e)):Y?(f("exit",W,"non-html content-type"),void(t.href=W)):Z?(f("exit",W,"network error"),void(t.href=W)):j?(f("exit",W,"different assets"),void(t.href=W)):z?(U[I].scrollPosition=pageYOffset,d(),void l(X,z,W)):(f("wait"),void(V=!0))}function O(){return y(arguments,!1)}function D(e){e=-e;for(var t in te)e in te[t]&&(window.clearTimeout(te[t][e].realId),delete te[t][e])}function q(e,t,n){var r=ie[t][e].indexOf(n);r>-1&&ie[t][e].splice(r,1)}var I,M,N,B,F,H,R,Y,j,K,G=0,U={},W=!1,X=!1,z=!1,J=0,Q=!1,V=!1,Z=!1,$=[],_=65,ee={preload:[],receive:[],wait:[],change:[],restore:[],exit:[]},te={},ne=[],re={},ie={};Element.prototype.matches||(Element.prototype.matches=Element.prototype.webkitMatchesSelector||Element.prototype.msMatchesSelector||function(t){for(var n=this,r=e.querySelectorAll(t),i=0;i<r.length;i++)if(r[i]==n)return!0;return!1});var oe=!1;if("pushState"in history&&"file:"!=t.protocol){oe=!0;var ae=n.indexOf("Android ");if(ae>-1){var fe=parseFloat(n.substr(ae+"Android ".length));if(fe<4.4&&(oe=!1,fe>=4))for(var le=[/ Chrome\//,/ UCBrowser\//,/ Firefox\//,/ Windows Phone /],de=0;de<le.length;de++)if(le[de].test(n)){oe=!0;break}}}return{supported:oe,init:function(n){oe?F||(F=!0,"mousedown"==n?K=!0:"number"==typeof n&&(_=n),I=r(t.href),te[I]={},U[I]={body:e.body,title:e.title,scrollPosition:pageYOffset},"loading"==e.readyState?e.addEventListener("DOMContentLoaded",m):m(),(R=new XMLHttpRequest).addEventListener("readystatechange",P),e.addEventListener("touchstart",E,!0),K?e.addEventListener("mousedown",b,!0):e.addEventListener("mouseover",w,!0),e.addEventListener("click",x,!0),addEventListener("popstate",S)):f("change",!0)},on:function(e,t){ee[e].push(t),"change"==e&&t(!J)},setTimeout:O,setInterval:function(){return y(arguments,!0)},clearTimeout:D,xhr:function(e){ne.push(e)},addPageEvent:function(){I in re||(re[I]=[]),re[I].push(arguments),addEventListener.apply(window,arguments)},removePageEvent:function(){var e=arguments;if(I in re)e:for(var t=0;t<re[I].length;t++)if(e.length==re[I][t].length){for(var n=0;n<re[I][t].length;n++)if(e[n]!=re[I][t][n])continue e;re[I].splice(t,1)}},addEvent:function(t,r,i){if(!(r in ie)&&(ie[r]={},e.addEventListener(r,function(e){var t=e.target;for(e.originalStopPropagation=e.stopPropagation,e.stopPropagation=function(){this.isPropagationStopped=!0,this.originalStopPropagation()};t&&1==t.nodeType;){for(var n in ie[r])if(t.matches(n)){for(var i=0;i<ie[r][n].length;i++)ie[r][n][i].call(t,e);if(e.isPropagationStopped)return;break}t=t.parentNode}},!1),"click"==r&&/iP(?:hone|ad|od)/.test(n))){var o=e.createElement("style");o.setAttribute("instantclick-mobile-safari-cursor",""),o.textContent="body { cursor: pointer !important; }",e.head.appendChild(o)}t in ie[r]||(ie[r][t]=[]),q(t,r,i),ie[r][t].push(i)},removeEvent:q}}(document,location,navigator.userAgent)});
+/**
+ * Pace
+ *
+ * A progress bar for the command-line.
+ *
+ * Example usage:
+ *
+ *     var total = 50000,
+ *         count = 0,
+ *         pace = require('pace')(total);
+ *
+ *     while (count++ < total) {
+ *       pace.op();
+ *
+ *       // Cause some work to be done.
+ *       for (var i = 0; i < 1000000; i++) {
+ *         count = count;
+ *       }
+ *     }
+ */
+
+// Module dependencies.
+var charm = require('charm');
+
+/**
+ * Pace 'class'.
+ */
+function Pace(options) {
+  options = options || {};
+
+  // Total number of items to process.
+  if (!options.total) {
+    throw new Error('You MUST specify the total number of operations that will be processed.');
+  }
+  this.total = options.total;
+
+  // Current item number.
+  this.current = 0;
+
+  // Maximum percent of total time the progressbar is allowed to take during processing.
+  // Defaults to 0.5%
+  this.max_burden = options.maxBurden || 0.5;
+
+  // Whether to show current burden %.
+  this.show_burden = options.showBurden || false;
+
+  // Internal time tracking properties.
+  this.started = false;
+  this.size = 50;
+  this.inner_time = 0;
+  this.outer_time = 0;
+  this.elapsed = 0;
+  this.time_start = 0;
+  this.time_end = 0;
+  this.time_left = 0;
+  this.time_burden = 0;
+  this.skip_steps = 0;
+  this.skipped = 0;
+  this.aborted = false;
+
+  // Setup charm.
+  this.charm = charm();
+  this.charm.pipe(process.stdout);
+
+  // Prepare the output.
+  this.charm.write("\n\n\n");
+}
+
+/**
+ * Export a factory function for new pace instances.
+ */
+module.exports = function(options) {
+  if (typeof options === 'number') {
+    options = {
+      total: options
+    };
+  }
+  return new Pace(options);
+};
+
+/**
+ * An operation has been emitted.
+ */
+Pace.prototype.op = function op(count) {
+  if (count) {
+    this.current = count;
+  }
+  else {
+    this.current++;
+  }
+
+  if (this.burdenReached()) {
+    return;
+  }
+
+  // Record the start time of the whole task.
+  if (!this.started) {
+    this.started = new Date().getTime();
+  }
+
+  // Record start time.
+  this.time_start = new Date().getTime();
+
+  this.updateTimes();
+  this.clear();
+  this.outputProgress();
+  this.outputStats();
+  this.outputTimes();
+
+  // The task is complete.
+  if (this.current >= this.total) {
+    this.finished();
+  }
+
+  // Record end time.
+  this.time_end = new Date().getTime();
+  this.inner_time = this.time_end - this.time_start;
+};
+
+/**
+ * Update times.
+ */
+Pace.prototype.updateTimes = function updateTimes() {
+  this.elapsed = this.time_start - this.started;
+  if (this.time_end > 0) {
+    this.outer_time = this.time_start - this.time_end;
+  }
+  if (this.inner_time > 0 && this.outer_time > 0) {
+    // Set Current Burden
+    this.time_burden = (this.inner_time / (this.inner_time + this.outer_time)) * 100;
+
+    // Estimate time left.
+    this.time_left = (this.elapsed / this.current) * (this.total - this.current);
+
+    if (this.time_left < 0) this.time_left = 0;
+  }
+  // If our "burden" is too high, increase the skip steps.
+  if (this.time_burden > this.max_burden && (this.skip_steps < (this.total / this.size))) {
+    this.skip_steps = Math.floor(++this.skip_steps * 1.3);
+  }
+};
+
+/**
+ * Move the cursor back to the beginning and clear old output.
+ */
+Pace.prototype.clear = function clear() {
+  this.charm.erase('line').up(1).erase('line').up(1).erase('line').write("\r");
+};
+
+/**
+ * Output the progress bar.
+ */
+Pace.prototype.outputProgress = function outputProgress() {
+  this.charm.write('Processing: ');
+  this.charm.foreground('green').background('green');
+  for (var i = 0; i < ((this.current / this.total) * this.size) - 1 ; i++) {
+     this.charm.write(' ');
+  }
+  this.charm.foreground('white').background('white');
+  while (i < this.size - 1) {
+    this.charm.write(' ');
+    i++;
+  }
+  this.charm.display('reset').down(1).left(100);
+};
+
+/**
+ * Output numerical progress stats.
+ */
+Pace.prototype.outputStats = function outputStats() {
+  this.perc = (this.current/this.total)*100;
+  this.perc = padLeft(this.perc.toFixed(2), 2);
+  this.charm.write('            ').display('bright').write(this.perc + '%').display('reset');
+  this.total_len = formatNumber(this.total).length;
+  this.charm.write('   ').display('bright').write(padLeft(formatNumber(this.current), this.total_len)).display('reset');
+  this.charm.write('/' + formatNumber(this.total));
+
+  // Output burden.
+  if (this.show_burden) {
+    this.charm.write('    ').display('bright').write('Burden: ').display('reset');
+    this.charm.write(this.time_burden.toFixed(2) + '% / ' + this.skip_steps);
+  }
+
+  this.charm.display('reset').down(1).left(100);
+};
+
+/**
+ * Output times.
+ */
+Pace.prototype.outputTimes = function outputTimes() {
+  // Output times.
+  var hours = Math.floor(this.elapsed / (1000 * 60 * 60));
+  var min = Math.floor(((this.elapsed / 1000) % (60 * 60)) / 60);
+  var sec = Math.floor((this.elapsed / 1000) % 60);
+
+  this.charm.write('            ').display('bright').write('Elapsed: ').display('reset');
+  this.charm.write(hours + 'h ' + min + 'm ' + sec + 's');
+
+  if (this.time_left){
+    hours = Math.floor(this.time_left / (1000 * 60 * 60));
+    min = Math.floor(((this.time_left / 1000) % (60 * 60)) / 60);
+    sec = Math.ceil((this.time_left / 1000) % 60);
+
+    this.charm.write('   ').display('bright').write('Remaining: ').display('reset');
+    this.charm.write(hours + 'h ' + min + 'm ' + sec + 's');
+  }
+};
+
+/**
+ * The progress has finished.
+ */
+Pace.prototype.finished = function finished() {
+  this.charm.write("\n\n");
+  this.charm.write('Finished!');
+  this.charm.write("\n\n");
+};
+
+/**
+ * Check if the burden threshold has been reached.
+ */
+Pace.prototype.burdenReached = function burdenReached() {
+  // Skip this cycle if the burden has determined we should.
+  if ((this.skip_steps > 0) && (this.current < this.total)) {
+    if (this.skipped < this.skip_steps) {
+      this.skipped++;
+      return true;
+    }
+    else {
+      this.skipped = 0;
+    }
+  }
+  return false;
+};
+
+
+/**
+ * Utility functions.
+ */
+
+// Left-pad a string.
+function padLeft(str, length, pad) {
+  pad = pad || ' ';
+  while (str.length < length)
+    str = pad + str;
+  return str;
+}
+
+// Ported from php.js. Same has php's number_format().
+function formatNumber(number, decimals, dec_point, thousands_sep) {
+  number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+  var n = !isFinite(+number) ? 0 : +number,
+    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+    s = '',
+    toFixedFix = function (n, prec) {
+      var k = Math.pow(10, prec);
+      return '' + Math.round(n * k) / k;
+    };
+  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+  if (s[0].length > 3) {
+    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+  }
+  if ((s[1] || '').length < prec) {
+    s[1] = s[1] || '';
+    s[1] += new Array(prec - s[1].length + 1).join('0');
+  }
+  return s.join(dec);
+}
