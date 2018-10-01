@@ -7,23 +7,23 @@
 
 // -- Dependencies --------------------------------------------------------------
 
-const gulp        = require('gulp');
-const gulpif      = require('gulp-if');
-const sass        = require('gulp-sass');
-const concat      = require('gulp-concat');
-const header      = require('gulp-header');
-const uglify      = require('gulp-uglify-es').default;
-const cssnano     = require('gulp-cssnano');
-const changed     = require('gulp-changed');
-const browserSync = require('browser-sync');
-const pkg         = require('./package.json');
-const prefix      = require('gulp-autoprefixer');
-const strip       = require('gulp-strip-css-comments');
-const pump        = require('pump');
-const { reload }      = browserSync;
+import gulp from 'gulp';
+import gulpif from 'gulp-if';
+import sass from 'gulp-sass';
+import concat from 'gulp-concat';
+import header from 'gulp-header';
+import uglify from 'gulp-uglify-es';
+import cssnano from 'gulp-cssnano';
+import changed from 'gulp-changed';
+import browserSync from 'browser-sync';
+import pkg from './package.json';
+import prefix from 'gulp-autoprefixer';
+import strip from 'gulp-strip-css-comments';
+import pump from 'pump';
+import { reload } from 'browser-sync';
 
 let isProduction = process.env.NODE_ENV === 'production';
-isProduction = true;
+// isProduction = true;
 // -- Files ---------------------------------------------------------------------
 
 const dist = {
@@ -66,7 +66,7 @@ const banner = [ "/**",
 
 // -- Tasks ---------------------------------------------------------------------
 
-gulp.task('js-common', function(cb) {
+gulp.task('js-common', (cb) => {
   pump([
     gulp.src(src.js.common.node_modules),
     changed(dist.js),
@@ -106,8 +106,8 @@ gulp.task('css', function(cb) {
 
 gulp.task('server', () => browserSync.init(pkg.browserSync));
 
-gulp.task('js', ['js-common', 'js-post']);
-gulp.task('build', ['css', 'js']);
+gulp.task('js', gulp.series('js-common', 'js-post'));
+gulp.task('build', gulp.series('css', 'js'));
 
 gulp.task('default', function() {
   gulp.start(['build', 'server']);
