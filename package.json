@@ -27,8 +27,6 @@
   "devDependencies": {
     "browser-sync": "^2.24.7",
     "coffee-script": "latest",
-    "gulp": "^3.9.1",
-    "gulp-add-src": "^1.0.0",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-changed": "^3.2.0",
     "gulp-coffee": "latest",
@@ -37,9 +35,7 @@
     "gulp-header": "^2.0.5",
     "gulp-if": "^2.0.2",
     "gulp-sass": "^4.0.1",
-    "gulp-strip-css-comments": "^2.0.0",
-    "gulp-uglify": "^3.0.1",
-    "gulp-util": "latest"
+    "gulp-strip-css-comments": "^2.0.0"
   },
   "engines": {
     "node": ">= 8"
@@ -56,8 +52,9 @@
   "dependencies": {
     "fastclick": "^1.0.6",
     "fitvids": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-uglify-es": "^1.0.4",
     "instantclick": "^3.1.0-2",
-    "pace": "0.0.4",
-    "reading-time": "github:michael-lynch/reading-time"
+    "pump": "^3.0.0"
   }
 }

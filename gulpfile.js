@@ -9,22 +9,21 @@
 
 const gulp        = require('gulp');
 const gulpif      = require('gulp-if');
-const gutil       = require('gulp-util');
 const sass        = require('gulp-sass');
 const concat      = require('gulp-concat');
 const header      = require('gulp-header');
-const uglify      = require('gulp-uglify');
+const uglify      = require('gulp-uglify-es').default;
 const cssnano     = require('gulp-cssnano');
-const addsrc      = require('gulp-add-src');
 const changed     = require('gulp-changed');
 const browserSync = require('browser-sync');
 const pkg         = require('./package.json');
 const prefix      = require('gulp-autoprefixer');
 const strip       = require('gulp-strip-css-comments');
+const pump        = require('pump');
 const { reload }      = browserSync;
 
-const isProduction = process.env.NODE_ENV === 'production';
-
+let isProduction = process.env.NODE_ENV === 'production';
+isProduction = true;
 // -- Files ---------------------------------------------------------------------
 
 const dist = {
@@ -44,11 +43,8 @@ const src = {
       main   : ['assets/js/src/__init.js',
                 'assets/js/src/main.js',
                 'assets/js/src/cover.js'],
-      node_modules : ['node_modules/reading-time/src/readingtime.js',
-                'node_modules/fastclick/lib/fastclick.js',
-                'node_modules/instantclick/instantclick.js',
-                'node_modules/pace/pace.js',
-                ]
+      node_modules : ['node_modules/fastclick/lib/fastclick.js',
+                      'node_modules/instantclick/instantclick.js'],
     },
     post     : ['node_modules/fitvids/fitvids.js',
                 'assets/js/src/prism.js']
@@ -56,7 +52,6 @@ const src = {
 
   css      : {
     main   : `assets/css/${dist.name}.css`,
-    node_modules : []
   }
 };
 
@@ -71,36 +66,42 @@ const banner = [ "/**",
 
 // -- Tasks ---------------------------------------------------------------------
 
-gulp.task('js-common', function() {
-  gulp.src(src.js.common.node_modules)
-  .pipe(changed(dist.js))
-  .pipe(addsrc(src.js.common.main))
-  .pipe(concat(dist.name + '.common.js'))
-  .pipe(gulpif(isProduction, uglify()))
-  .pipe(gulpif(isProduction, header(banner, {pkg})))
-  .pipe(gulp.dest(dist.js));
+gulp.task('js-common', function(cb) {
+  pump([
+    gulp.src(src.js.common.node_modules),
+    changed(dist.js),
+    gulp.src(src.js.common.main),
+    concat(dist.name + '.common.js'),
+    gulpif(isProduction, uglify()),
+    gulpif(isProduction, header(banner, {pkg})),
+    gulp.dest(dist.js),
+  ], cb);
 });
 
-gulp.task('js-post', function() {
-  gulp.src(src.js.post)
-  .pipe(changed(dist.js))
-  .pipe(concat(dist.name + '.post.js'))
-  .pipe(gulpif(isProduction, uglify()))
-  .pipe(gulpif(isProduction, header(banner, {pkg})))
-  .pipe(gulp.dest(dist.js));
+
+gulp.task('js-post', function(cb) {
+  pump([
+    gulp.src(src.js.post),
+    changed(dist.js),
+    concat(dist.name + '.post.js'),
+    gulpif(isProduction, uglify()),
+    gulpif(isProduction, header(banner, {pkg})),
+    gulp.dest(dist.js),
+  ], cb);
 });
 
-gulp.task('css', function() {
-  gulp.src(src.css.node_modules)
-  .pipe(changed(dist.css))
-  .pipe(addsrc(src.sass.main))
-  .pipe(sass().on('error', sass.logError))
-  .pipe(concat(`${dist.name}.css`))
-  .pipe(gulpif(isProduction, prefix()))
-  .pipe(gulpif(isProduction, strip({all: true})))
-  .pipe(gulpif(isProduction, cssnano()))
-  .pipe(gulpif(isProduction, header(banner, {pkg})))
-  .pipe(gulp.dest(dist.css));
+gulp.task('css', function(cb) {
+  pump([
+    gulp.src(src.sass.main),
+    changed(dist.css),
+    sass().on('error', sass.logError),
+    concat(`${dist.name}.css`),
+    gulpif(isProduction, prefix()),
+    gulpif(isProduction, strip({all: true})),
+    gulpif(isProduction, cssnano()),
+    gulpif(isProduction, header(banner, {pkg})),
+    gulp.dest(dist.css),
+  ], cb);
 });
 
 gulp.task('server', () => browserSync.init(pkg.browserSync));

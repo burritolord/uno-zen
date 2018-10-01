@@ -136,3 +136,48 @@
     color: $hover-color;
   }
 }
+
+#post-content .kg-width-wide .kg-image {
+  max-width: 100%;
+}
+
+#post-content .kg-width-full .kg-image {
+  max-width: 100%;
+}
+
+// Gallery currently looks funky with this theme.
+// Needs fixing to look right.
+.kg-gallery-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  width: 100vw;
+}
+
+.kg-gallery-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.kg-gallery-image img {
+  display: block;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.kg-gallery-row:not(:first-of-type) {
+  margin: 0.75em 0 0 0;
+}
+
+.kg-gallery-image:not(:first-of-type) {
+  margin: 0 0 0 0.75em;
+}
+
+.kg-gallery-card + .kg-image-card.kg-width-wide,
+.kg-gallery-card + .kg-gallery-card,
+.kg-image-card.kg-width-wide + .kg-gallery-card,
+.kg-image-card.kg-width-wide + .kg-image-card.kg-width-wide {
+  margin: -2.25em 0 3em;
+}
