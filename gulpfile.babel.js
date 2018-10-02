@@ -79,7 +79,7 @@ gulp.task('js-common', (cb) => {
 });
 
 
-gulp.task('js-post', function(cb) {
+gulp.task('js-post', (cb) => {
   pump([
     gulp.src(src.js.post),
     changed(dist.js),
@@ -90,7 +90,7 @@ gulp.task('js-post', function(cb) {
   ], cb);
 });
 
-gulp.task('css', function(cb) {
+gulp.task('css', (cb) => {
   pump([
     gulp.src(src.sass.main),
     changed(dist.css),

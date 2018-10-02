@@ -54,7 +54,7 @@
 
 %btn-cover-with-border {
   @extend %btn-cover;
-  border: 1px solid $gray-lightest;
+  border: 1.2px solid $gray-lightest;
 }
 
 @mixin placeholder {

@@ -1,15 +1,19 @@
 {
   "name": "uno-zen",
   "description": "Minimalist and Elegant theme for Ghost",
-  "homepage": "https://github.com/kikobeats/uno-zen",
+  "homepage": "https://github.com/nickjamesio/uno-zen",
   "version": "2.9.8",
-  "author": "Kiko Beats <josefrancisco.verdu@gmail.com> (https://github.com/kikobeats)",
+  "author": {
+    "name" : "Nick James",
+    "email" : "thenickjames@gmail.com",
+    "url" : "https://nickjames.io"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kikobeats/uno-zen.git"
+    "url": "git+https://github.com/nickjamesio/uno-zen.git"
   },
   "bugs": {
-    "url": "https://github.com/Kikobeats/uno-zen/issues"
+    "url": "https://github.com/nickjamesio/uno-zen/issues"
   },
   "keywords": [
     "elegant",
